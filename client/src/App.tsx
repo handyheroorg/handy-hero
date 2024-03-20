@@ -1,3 +1,3 @@
 export default function App() {
-  return <div>Handy Hero</div>;
+  return <div>Handy Hero</div>
 }
