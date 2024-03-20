@@ -1,0 +1,29 @@
+{
+  "env": { "browser": true, "es2020": true },
+  "globals": {},
+  "extends": [
+    "../.eslintrc.json",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:import/typescript",
+    "plugin:react/jsx-runtime"
+  ],
+  "ignorePatterns": ["dist"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["@typescript-eslint", "react-refresh", "import"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "react/no-unknown-property": "error",
+    "react/prop-types": "off",
+    "react/self-closing-comp": ["error", { "component": true, "html": true }],
+    "no-undef": "off"
+  }
+}
