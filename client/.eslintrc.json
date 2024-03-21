@@ -1,5 +1,7 @@
 {
-  "env": { "browser": true, "es2020": true },
+  "env": {
+    "browser": true
+  },
   "globals": {},
   "extends": [
     "../.eslintrc.json",
@@ -8,16 +10,15 @@
     "plugin:import/typescript",
     "plugin:react/jsx-runtime"
   ],
-  "ignorePatterns": ["dist"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     }
   },
-  "plugins": ["@typescript-eslint", "react-refresh", "import"],
+  "plugins": ["import"],
   "settings": {
     "react": {
-      "version": "detect"
+      "version": "16.14.0"
     }
   },
   "rules": {
