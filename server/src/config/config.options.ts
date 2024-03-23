@@ -16,6 +16,7 @@ const validationSchema = joi
       .required(),
     PORT: joi.number().integer().required(),
     DATABASE_URL: joi.string().required(),
+    JWT_SECRET: joi.string().required(),
   })
   .required()
 
