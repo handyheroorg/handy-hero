@@ -70,7 +70,12 @@ export function Signup() {
                 <FormLabel>Role</FormLabel>
 
                 <FormControl>
-                  <Select defaultValue={Role.SERVICE_PROVIDER} onValueChange={field.onChange} {...field}>
+                  <Select
+                    defaultValue={Role.SERVICE_PROVIDER}
+                    onValueChange={field.onChange}
+                    disabled={signupMutation.isPending}
+                    {...field}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Choose your role" />
                     </SelectTrigger>
@@ -104,7 +109,7 @@ export function Signup() {
                 <FormLabel>Email</FormLabel>
 
                 <FormControl>
-                  <Input placeholder="Enter your email address" {...field} />
+                  <Input placeholder="Enter your email address" disabled={signupMutation.isPending} {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -120,7 +125,12 @@ export function Signup() {
                 <FormLabel>Password</FormLabel>
 
                 <FormControl>
-                  <Input type="password" placeholder="Enter your password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Enter your password"
+                    disabled={signupMutation.isPending}
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -128,7 +138,7 @@ export function Signup() {
             )}
           />
 
-          <Button className="w-max" type="submit" icon={<LogInIcon />}>
+          <Button className="w-max" type="submit" icon={<LogInIcon />} loading={signupMutation.isPending}>
             Login
           </Button>
         </form>

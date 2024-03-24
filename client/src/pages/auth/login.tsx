@@ -4,8 +4,11 @@ import { LogInIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { loginSchema, LoginSchema } from '@/schema'
 import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui'
+import { useAuthContext } from '@/hooks'
 
 export function Login() {
+  const { loginMutation } = useAuthContext()
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -14,17 +17,18 @@ export function Login() {
     },
   })
 
-  function handleLogin(values: LoginSchema) {
-    console.log(values)
-  }
-
   return (
     <div>
       <p className="text-sm italic md:hidden text-primary">Handy Hero</p>
       <h1 className="text-2xl font-bold mb-4">Login Now</h1>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleLogin)} className="grid grid-cols-1 gap-4 mb-4">
+        <form
+          onSubmit={form.handleSubmit((data) => {
+            loginMutation.mutate(data)
+          })}
+          className="grid grid-cols-1 gap-4 mb-4"
+        >
           <FormField
             control={form.control}
             name="email"
@@ -33,7 +37,7 @@ export function Login() {
                 <FormLabel>Email</FormLabel>
 
                 <FormControl>
-                  <Input placeholder="Enter your email address" {...field} />
+                  <Input placeholder="Enter your email address" disabled={loginMutation.isPending} {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -49,7 +53,12 @@ export function Login() {
                 <FormLabel>Password</FormLabel>
 
                 <FormControl>
-                  <Input type="password" placeholder="Enter your password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Enter your password"
+                    disabled={loginMutation.isPending}
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -57,7 +66,7 @@ export function Login() {
             )}
           />
 
-          <Button className="w-max" type="submit" icon={<LogInIcon />}>
+          <Button className="w-max" type="submit" icon={<LogInIcon />} loading={loginMutation.isPending}>
             Login
           </Button>
         </form>
