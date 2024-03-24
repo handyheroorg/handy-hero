@@ -1,11 +1,12 @@
-import { Button } from '@/components/ui/button'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './components/pages/home'
 
 export default function App() {
   return (
-    <div className="flex h-screen items-center justify-center text-9xl font-extrabold flex-col gap-4">
-      <h1>Handy Hero</h1>
-
-      <Button>Shadcn Works</Button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
