@@ -25,6 +25,7 @@
     "react/no-unknown-property": "error",
     "react/prop-types": "off",
     "react/self-closing-comp": ["error", { "component": true, "html": true }],
-    "no-undef": "off"
+    "no-undef": "off",
+    "@typescript-eslint/no-use-before-define": "off"
   }
 }
