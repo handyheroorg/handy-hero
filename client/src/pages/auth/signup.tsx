@@ -19,8 +19,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui'
+import { useAuthContext } from '@/hooks'
 
 export function Signup() {
+  const { signupMutation } = useAuthContext()
+
   const form = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -31,17 +34,18 @@ export function Signup() {
     },
   })
 
-  function handleSignup(values: SignupSchema) {
-    console.log(values)
-  }
-
   return (
     <div>
       <p className="text-sm italic md:hidden text-primary">Handy Hero</p>
       <h1 className="text-2xl font-bold mb-4">Signup Now</h1>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSignup)} className="grid grid-cols-1 gap-4 mb-4">
+        <form
+          onSubmit={form.handleSubmit((data) => {
+            signupMutation.mutate(data)
+          })}
+          className="grid grid-cols-1 gap-4 mb-4"
+        >
           <FormField
             control={form.control}
             name="fullName"

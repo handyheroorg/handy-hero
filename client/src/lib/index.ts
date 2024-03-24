@@ -1,3 +1,6 @@
 export * from './client'
 export * from './env'
 export * from './constants'
+export * from './error'
+export * from './router'
+export * from './utils'

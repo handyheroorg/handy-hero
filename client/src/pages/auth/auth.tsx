@@ -1,7 +1,23 @@
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import { AuthIllustration } from '@/components/icons'
+import { useAuthContext } from '@/hooks'
+import Loading from '@/components/loading'
 
 export default function AuthLayout() {
+  const { isAuthInProgress, user } = useAuthContext()
+
+  if (isAuthInProgress) {
+    return (
+      <div className="flex items-center justify-center h-screen z-50">
+        <Loading title="Authentication in progress..." />
+      </div>
+    )
+  }
+
+  if (user) {
+    return <Navigate to="/" />
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
       <div className="hidden md:flex bg-gradient-to-b from-emerald-900 to-emerald-600 px-8 items-center justify-center">
