@@ -1,3 +1,7 @@
 export function Login() {
-  return <div>This is login page</div>
+  return (
+    <div>
+      <h1 className="text-2xl font-bold">Login Now</h1>
+    </div>
+  )
 }
