@@ -65,7 +65,6 @@ export function Login() {
         <div className="flex items-center text-sm text-center text-muted-foreground gap-2">
           <p>Do not have an account? </p>{' '}
           <Link to="/auth/signup" className="text-secondary-foreground">
-            {' '}
             Signup Now
           </Link>
         </div>
