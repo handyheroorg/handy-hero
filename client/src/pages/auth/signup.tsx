@@ -139,7 +139,7 @@ export function Signup() {
           />
 
           <Button className="w-max" type="submit" icon={<LogInIcon />} loading={signupMutation.isPending}>
-            Login
+            Signup
           </Button>
         </form>
 
