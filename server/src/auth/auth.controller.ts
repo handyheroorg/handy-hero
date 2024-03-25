@@ -3,7 +3,7 @@ import { User } from 'src/users/users.decorator'
 import { SanitizedUser } from 'src/users/users.types'
 import { AuthService } from './auth.service'
 import { SigninDto, SignupDto } from './auth.dto'
-import { JwtAuthGuard } from './auth.guard'
+import { JwtAuthGuard } from './guards/jwt-auth.guard'
 
 @Controller('auth')
 export class AuthController {
