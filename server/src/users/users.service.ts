@@ -7,7 +7,16 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createUser(dto: CreateUserDto) {
-    return this.prisma.user.create({ data: dto, select: { id: true, fullName: true, email: true, role: true } })
+    const userCreated = await this.prisma.user.create({
+      data: dto,
+      select: { id: true, fullName: true, email: true, role: true },
+    })
+
+    if (userCreated.role === 'SERVICE_PROVIDER') {
+      await this.prisma.serviceProviderProfile.create({ data: { userId: userCreated.id } })
+    }
+
+    return userCreated
   }
 
   async findUserById(id: string) {
