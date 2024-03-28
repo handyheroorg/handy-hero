@@ -1,5 +1,5 @@
 import { Role } from '@prisma/client'
-import { IsEmail, IsEnum, IsOptional, IsString, IsUrl, MinLength } from 'class-validator'
+import { IsEmail, IsEnum, IsNumber, IsOptional, IsString, IsUrl, Max, Min, MinLength } from 'class-validator'
 
 export class CreateUserDto {
   @IsString()
@@ -45,4 +45,16 @@ export class UpdateUserDto {
   @IsString()
   @IsUrl()
   avatar?: string
+}
+
+export class UpdateLocationDto {
+  @IsNumber()
+  @Min(-90, { message: 'Invalid value provided!' })
+  @Max(90, { message: 'Invalid value provided!' })
+  latitude: number
+
+  @IsNumber()
+  @Min(-180, { message: 'Invalid value provided!' })
+  @Max(180, { message: 'Invalid value provided!' })
+  longitude: number
 }
