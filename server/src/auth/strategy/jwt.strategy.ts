@@ -4,9 +4,7 @@ import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { Environment } from 'src/config/config.options'
 import { UsersService } from 'src/users/users.service'
-import { SanitizedUser } from 'src/users/users.types'
-import { User } from '@prisma/client'
-import { omit } from 'remeda'
+import { sanitizeUser } from 'src/utils'
 import { JwtPayload } from '../auth.types'
 
 @Injectable()
@@ -25,10 +23,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('Unauthorized User!')
     }
 
-    return this.sanitizeUser(user)
-  }
-
-  private sanitizeUser(user: User): SanitizedUser {
-    return omit(user, ['password'])
+    return sanitizeUser(user)
   }
 }

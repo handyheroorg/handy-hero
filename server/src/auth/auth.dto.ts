@@ -21,6 +21,14 @@ export class SignupDto {
   @IsEmail()
   email: string
 
+  /** @TODO : Figure out validation for mobile number for different countries */
+  @IsString()
+  mobileNumber: string
+
+  @IsString()
+  @MinLength(2)
+  country: string
+
   @IsEnum(SignupRoles, { message: 'Invalid role provided!' })
   role: SignupRoles
 
