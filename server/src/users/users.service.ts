@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { sanitizeUser } from 'src/utils'
-import { CreateUserDto, UpdateLocationDto, UpdateUserDto } from './users.dto'
+import { Prisma } from '@prisma/client'
+import { CreateUserDto, UpdateLocationDto, UpdateProfileDto, UpdateUserDto } from './users.dto'
 import { SanitizedUser } from './users.types'
 
 @Injectable()
@@ -41,5 +42,17 @@ export class UsersService {
     }
 
     return this.prisma.location.create({ data: { ...dto, user: { connect: { id: user.id } } } })
+  }
+
+  async updateProfile(dto: UpdateProfileDto, user: SanitizedUser) {
+    const profile = await this.prisma.serviceProviderProfile.findFirst({ where: { userId: user.id } })
+    if (!profile) {
+      throw new InternalServerErrorException(`"Service Provider profile is not created for user ${user.id}`)
+    }
+
+    return this.prisma.serviceProviderProfile.update({
+      where: { id: profile.id },
+      data: { ...dto, education: dto.education as unknown as Prisma.InputJsonValue[] },
+    })
   }
 }
