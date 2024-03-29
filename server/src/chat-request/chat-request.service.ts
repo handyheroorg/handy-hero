@@ -4,6 +4,7 @@ import { SanitizedUser } from 'src/users/users.types'
 import { ServiceService } from 'src/service/service.service'
 import { UsersService } from 'src/users/users.service'
 import { CreateChatRequestDto } from './chat-request.dto'
+import { CHAT_REQUEST_INCLUDE_FIELDS } from './chat-request.fields'
 
 @Injectable()
 export class ChatRequestService {
@@ -24,5 +25,9 @@ export class ChatRequestService {
         service: { connect: { id: service.id } },
       },
     })
+  }
+
+  async findAll(user: SanitizedUser) {
+    return this.prisma.chatRequest.findMany({ where: { clientId: user.id }, include: CHAT_REQUEST_INCLUDE_FIELDS })
   }
 }
