@@ -8,9 +8,10 @@ import { PrismaService } from './prisma/prisma.service'
 import { AuthModule } from './auth/auth.module'
 import { ServiceModule } from './service/service.module'
 import { FeedbackModule } from './feedback/feedback.module'
+import { BadgeModule } from './badge/badge.module'
 
 @Module({
-  imports: [ConfigModule.forRoot(configOptions), UsersModule, AuthModule, ServiceModule, FeedbackModule],
+  imports: [ConfigModule.forRoot(configOptions), UsersModule, AuthModule, ServiceModule, FeedbackModule, BadgeModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
