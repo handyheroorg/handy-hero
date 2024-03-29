@@ -1,3 +1,4 @@
+import { PartialType, PickType } from '@nestjs/swagger'
 import { BadgeType } from '@prisma/client'
 import { IsEnum, IsString, IsUrl, MaxLength, MinLength } from 'class-validator'
 
@@ -19,3 +20,5 @@ export class CreateBadgeDto {
   @IsEnum(BadgeType)
   type: BadgeType
 }
+
+export class BadgeFiltersDto extends PartialType(PickType(CreateBadgeDto, ['type'])) {}
