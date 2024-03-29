@@ -2,7 +2,8 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { UsersService } from 'src/users/users.service'
-import { CreateServiceDto, UpdateServiceDto } from './service.dto'
+import { Prisma } from '@prisma/client'
+import { CreateServiceDto, FindServicesFiltersDto, UpdateServiceDto } from './service.dto'
 
 @Injectable()
 export class ServiceService {
@@ -37,5 +38,30 @@ export class ServiceService {
     }
 
     return this.prisma.service.update({ where: { id: service.id }, data: dto })
+  }
+
+  findAll(filters: FindServicesFiltersDto) {
+    const where: Prisma.ServiceWhereInput = {}
+
+    if (filters.query) {
+      where.OR = [
+        { name: { contains: filters.query, mode: 'insensitive' } },
+        { description: { contains: filters.query, mode: 'insensitive' } },
+      ]
+    }
+
+    if (filters.maxPrice && filters.maxPrice) {
+      where.AND = [{ price: { gte: filters.minPrice } }, { price: { lte: filters.maxPrice } }]
+    }
+
+    if (filters.priceType) {
+      where.priceType = filters.priceType
+    }
+
+    if (filters.skills.length) {
+      where.skills = { hasSome: filters.skills }
+    }
+
+    return this.prisma.service.findMany({ where })
   }
 }

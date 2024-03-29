@@ -15,6 +15,7 @@ import {
   ValidateIf,
 } from 'class-validator'
 import { PartialType } from '@nestjs/swagger'
+import { Type } from 'class-transformer'
 
 export class CreateServiceDto {
   @IsString()
@@ -54,3 +55,28 @@ export class CreateServiceDto {
 }
 
 export class UpdateServiceDto extends PartialType(CreateServiceDto) {}
+
+export class FindServicesFiltersDto {
+  @IsOptional()
+  @IsString()
+  query?: string
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  skills?: string[]
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  minPrice?: number
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  maxPrice?: number
+
+  @IsOptional()
+  @IsEnum(ServicePriceType)
+  priceType?: ServicePriceType
+}
