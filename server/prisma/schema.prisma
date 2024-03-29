@@ -28,9 +28,11 @@ model User {
   // Each SERVICE_PROVIDER will have their own profile
   profile  ServiceProviderProfile?
 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  feedbacks Feedback[] @relation(name: "FeedbacksGiven")
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  feedbacks           Feedback[]    @relation(name: "FeedbacksGiven")
+  chatRequestCreated  ChatRequest[] @relation(name: "ChatRequestCreated")
+  chatRequestReceived ChatRequest[] @relation(name: "ChatRequestReceived")
 }
 
 model Location {
@@ -94,7 +96,9 @@ model Service {
   price     Float
   priceType ServicePriceType
   maxHours  Float? // in case if priceType is HOURLY
-  feedbacks Feedback[]
+
+  feedbacks    Feedback[]
+  chatRequests ChatRequest[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -139,6 +143,30 @@ model Badge {
   icon        String
   description String
   type        BadgeType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ChatRequestStatus {
+  PENDING
+  REJECTED
+  ACCEPTED
+}
+
+model ChatRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  status ChatRequestStatus @default(PENDING)
+
+  client   User   @relation(name: "ChatRequestCreated", fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String @db.ObjectId
+
+  serviceProvider   User   @relation(name: "ChatRequestReceived", fields: [serviceProviderId], references: [id], onDelete: Cascade)
+  serviceProviderId String @db.ObjectId
+
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId String  @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
