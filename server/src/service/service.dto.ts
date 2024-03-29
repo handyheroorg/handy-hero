@@ -14,6 +14,7 @@ import {
   MinLength,
   ValidateIf,
 } from 'class-validator'
+import { PartialType } from '@nestjs/swagger'
 
 export class CreateServiceDto {
   @IsString()
@@ -51,3 +52,5 @@ export class CreateServiceDto {
   @ValidateIf((values) => values.priceType === ServicePriceType.HOURLY)
   maxHours: number
 }
+
+export class UpdateServiceDto extends PartialType(CreateServiceDto) {}

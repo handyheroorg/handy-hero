@@ -44,11 +44,17 @@ export class UsersService {
     return this.prisma.location.create({ data: { ...dto, user: { connect: { id: user.id } } } })
   }
 
-  async updateProfile(dto: UpdateProfileDto, user: SanitizedUser) {
-    const profile = await this.prisma.serviceProviderProfile.findFirst({ where: { userId: user.id } })
+  async findProfile(userId: string) {
+    const profile = await this.prisma.serviceProviderProfile.findFirst({ where: { userId } })
     if (!profile) {
-      throw new InternalServerErrorException(`"Service Provider profile is not created for user ${user.id}`)
+      throw new InternalServerErrorException(`"Service Provider profile is not created for user ${userId}`)
     }
+
+    return profile
+  }
+
+  async updateProfile(dto: UpdateProfileDto, user: SanitizedUser) {
+    const profile = await this.findProfile(user.id)
 
     return this.prisma.serviceProviderProfile.update({
       where: { id: profile.id },
