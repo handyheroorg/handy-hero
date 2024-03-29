@@ -68,4 +68,28 @@ model ServiceProviderProfile {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Relationships 🤝 
+  services Service[]
+}
+
+enum ServicePriceType {
+  HOURLY
+  FIXED
+}
+
+model Service {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  profile   ServiceProviderProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String                 @db.ObjectId
+
+  name        String
+  description String?
+  thumbnail   String?
+  skills      String[]
+
+  price     Float
+  priceType ServicePriceType
+  maxHours  Float? // in case if priceType is HOURLY
 }

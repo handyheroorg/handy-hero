@@ -137,7 +137,6 @@ export class ExperienceDto {
   @IsBoolean()
   currentlyWorkingHere?: boolean
 
-  @IsOptional()
   @IsDateString()
   @ValidateIf((values) => values.currentlyWorkingHere === false)
   endDate: string

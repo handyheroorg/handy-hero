@@ -52,7 +52,11 @@ export class UsersService {
 
     return this.prisma.serviceProviderProfile.update({
       where: { id: profile.id },
-      data: { ...dto, education: dto.education as unknown as Prisma.InputJsonValue[] },
+      data: {
+        ...dto,
+        education: dto.education as unknown as Prisma.InputJsonValue[],
+        experience: dto.experience as unknown as Prisma.InputJsonValue[],
+      },
     })
   }
 }
