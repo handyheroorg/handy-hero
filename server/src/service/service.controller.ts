@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { User } from 'src/users/users.decorator'
 import { SanitizedUser } from 'src/users/users.types'
@@ -19,10 +19,15 @@ export class ServiceController {
     return this.serviceService.createService(dto, user)
   }
 
-  @Patch(':serviceId')
+  @Patch(':id')
   @UseGuards(RoleGuard)
   @Role('SERVICE_PROVIDER')
-  updateService(@Param('serviceId') id: string, @Body() dto: UpdateServiceDto, @User() user: SanitizedUser) {
+  updateService(@Param('id') id: string, @Body() dto: UpdateServiceDto, @User() user: SanitizedUser) {
     return this.serviceService.updateService(id, dto, user)
+  }
+
+  @Get(':id')
+  findById(@Param('id') id: string) {
+    return this.serviceService.findById(id)
   }
 }
