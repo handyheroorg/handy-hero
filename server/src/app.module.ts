@@ -7,9 +7,10 @@ import configOptions from './config/config.options'
 import { PrismaService } from './prisma/prisma.service'
 import { AuthModule } from './auth/auth.module'
 import { ServiceModule } from './service/service.module'
+import { FeedbackModule } from './feedback/feedback.module'
 
 @Module({
-  imports: [ConfigModule.forRoot(configOptions), UsersModule, AuthModule, ServiceModule],
+  imports: [ConfigModule.forRoot(configOptions), UsersModule, AuthModule, ServiceModule, FeedbackModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
