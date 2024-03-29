@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { sanitizeUser } from 'src/utils'
 import { Prisma } from '@prisma/client'
@@ -64,5 +64,22 @@ export class UsersService {
         experience: dto.experience as unknown as Prisma.InputJsonValue[],
       },
     })
+  }
+
+  async findProfileById(id: string) {
+    const profile = await this.prisma.serviceProviderProfile.findFirst({ where: { id } })
+    if (!profile) {
+      throw new NotFoundException('Profile not found!')
+    }
+
+    return profile
+  }
+
+  async findUserForProfile(profileId: string) {
+    const profile = await this.findProfileById(profileId)
+
+    const user = await this.prisma.user.findFirst({ where: { id: profile.userId } })
+
+    return sanitizeUser(user)
   }
 }
