@@ -102,6 +102,7 @@ model Service {
 
   feedbacks    Feedback[]
   chatRequests ChatRequest[]
+  chatRooms    ChatRoom[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -192,8 +193,13 @@ model ChatRoom {
   provider   User   @relation(name: "ProviderChatRoom", fields: [providerId], references: [id])
   providerId String @db.ObjectId
 
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId String  @db.ObjectId
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([clientId, providerId, serviceId])
 }
 
 model Message {

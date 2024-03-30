@@ -11,6 +11,7 @@ import { FeedbackModule } from './feedback/feedback.module'
 import { BadgeModule } from './badge/badge.module'
 import { ChatRequestModule } from './chat-request/chat-request.module'
 import { NotificationModule } from './notification/notification.module'
+import { ChatRoomModule } from './chat-room/chat-room.module'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { NotificationModule } from './notification/notification.module'
     FeedbackModule,
     BadgeModule,
     ChatRequestModule,
+    ChatRoomModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
