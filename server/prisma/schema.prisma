@@ -95,12 +95,3 @@ model Message {
 
   createdAt DateTime @default(now())
 }
-
-model TestModel {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  userId String
-  servicePrividerId String?
-
-  status ChatStatus
-}
