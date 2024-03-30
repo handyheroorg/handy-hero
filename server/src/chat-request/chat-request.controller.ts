@@ -32,4 +32,9 @@ export class ChatRequestController {
   deleteChatRequest(@Param('id') id: string, @User() user: SanitizedUser) {
     return this.chatRequestService.deleteChatRequest(id, user)
   }
+
+  @Get(':id')
+  findById(@Param('id') id: string) {
+    return this.chatRequestService.findById(id)
+  }
 }

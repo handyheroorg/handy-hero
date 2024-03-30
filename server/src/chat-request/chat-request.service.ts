@@ -32,7 +32,7 @@ export class ChatRequestService {
   }
 
   async findById(id: string) {
-    const chatRequest = await this.prisma.chatRequest.findFirst({ where: { id } })
+    const chatRequest = await this.prisma.chatRequest.findFirst({ where: { id }, include: CHAT_REQUEST_INCLUDE_FIELDS })
     if (!chatRequest) {
       throw new NotFoundException('Chat request not found!')
     }
