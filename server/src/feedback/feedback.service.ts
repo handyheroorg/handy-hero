@@ -4,6 +4,9 @@ import { SanitizedUser } from 'src/users/users.types'
 import { ServiceService } from 'src/service/service.service'
 import { omit } from 'remeda'
 import { UsersService } from 'src/users/users.service'
+import { NotificationService } from 'src/notification/notification.service'
+import { ConfigService } from '@nestjs/config'
+import { Environment } from 'src/config/config.options'
 import { CreateFeedbackDto } from './feedback.dto'
 import { FEEDBACK_INCLUDE_FIELDS } from './feedback.fields'
 
@@ -13,6 +16,8 @@ export class FeedbackService {
     private readonly prisma: PrismaService,
     private readonly serviceService: ServiceService,
     private readonly userService: UsersService,
+    private readonly notificationService: NotificationService,
+    private readonly configService: ConfigService<Environment>,
   ) {}
 
   findByClientAndService(clientId: string, serviceId: string) {
@@ -21,6 +26,7 @@ export class FeedbackService {
 
   async createFeedback(dto: CreateFeedbackDto, user: SanitizedUser) {
     const service = await this.serviceService.findById(dto.serviceId)
+    const serviceProvider = await this.userService.findUserForProfile(service.profileId)
 
     const feedback = await this.findByClientAndService(user.id, dto.serviceId)
     if (feedback) {
@@ -28,6 +34,15 @@ export class FeedbackService {
     }
 
     /** @TODO Only allow to give feedback if the client have a contract for the service  */
+
+    await this.notificationService.sendEmailAndInApp({
+      receiverId: serviceProvider.id,
+      receiverEmail: serviceProvider.email,
+      receiverName: serviceProvider.fullName,
+      subject: `Feedback received on ${service.name}`,
+      body: `${user.fullName} has left a feedback for your service ${service.name}.`,
+      buttonUrl: `${this.configService.get('FRONTEND_BASE_URL')}/services/${service.id}`,
+    })
 
     return this.prisma.feedback.create({
       data: {

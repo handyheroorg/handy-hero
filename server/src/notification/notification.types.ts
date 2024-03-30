@@ -7,4 +7,16 @@ export type NewSubscriber = {
 
 export type UpdateSubscriber = Partial<Omit<NewSubscriber, 'email'>>
 
-export type NewNotificationPayload = Record<string, string>
+export type NewNotificationPayload = {
+  body: string
+  redirect_url?: string
+} & Record<string, string>
+
+export type NewEmailInAppPayload = {
+  receiverId: string
+  receiverEmail: string
+  receiverName: string
+  subject: string
+  buttonUrl: string
+  body: string
+} & Record<string, string>
