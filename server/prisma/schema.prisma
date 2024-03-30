@@ -33,8 +33,11 @@ model User {
   // Each SERVICE_PROVIDER will have their own profile
   profile  ServiceProviderProfile?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  feedbacks           Feedback[]    @relation(name: "FeedbacksGiven")
+  chatRequestCreated  ChatRequest[] @relation(name: "ChatRequestCreated")
+  chatRequestReceived ChatRequest[] @relation(name: "ChatRequestReceived")
 }
 
 model Location {
@@ -65,11 +68,114 @@ model ServiceProviderProfile {
   occupation      String?
   about           String?
   fullAddress     String?
+  experienceLevel ExperienceLevel?
   languages       String[]         @default([])
   education       Json[]           @default([])
   skills          Json[]           @default([])
   experienceLevel ExperienceLevel?
   experiences     Json[]           @default([])
+  skills          String[]         @default([])
+  education       Json[]           @default([])
+  experience      Json[]           @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships 🤝 
+  services  Service[]
+  feedbacks Feedback[]
+}
+
+enum ServicePriceType {
+  HOURLY
+  FIXED
+}
+
+model Service {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  profile   ServiceProviderProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String                 @db.ObjectId
+
+  name        String
+  description String?
+  thumbnail   String?
+  skills      String[]
+
+  price     Float
+  priceType ServicePriceType
+  maxHours  Float? // in case if priceType is HOURLY
+
+  feedbacks    Feedback[]
+  chatRequests ChatRequest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name, description])
+}
+
+model Feedback {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  // Feedback given to 
+  profile   ServiceProviderProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String                 @db.ObjectId
+
+  // Feedback given by
+  client   User   @relation(name: "FeedbacksGiven", fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String @db.ObjectId
+
+  // On which service the feedback is given
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId String  @db.ObjectId
+
+  content String
+  rating  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Only one feedback is allowed by client on a service
+  @@unique([clientId, serviceId])
+}
+
+enum BadgeType {
+  CLIENT
+  SERVICE_PROVIDER
+}
+
+model Badge {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title       String    @unique
+  icon        String
+  description String
+  type        BadgeType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ChatRequestStatus {
+  PENDING
+  REJECTED
+  ACCEPTED
+}
+
+model ChatRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  status ChatRequestStatus @default(PENDING)
+
+  client   User   @relation(name: "ChatRequestCreated", fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String @db.ObjectId
+
+  serviceProvider   User   @relation(name: "ChatRequestReceived", fields: [serviceProviderId], references: [id], onDelete: Cascade)
+  serviceProviderId String @db.ObjectId
+
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId String  @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

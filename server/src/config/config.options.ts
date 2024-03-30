@@ -17,6 +17,8 @@ const validationSchema = joi
     PORT: joi.number().integer().required(),
     DATABASE_URL: joi.string().required(),
     JWT_SECRET: joi.string().required(),
+    NOVU_API_KEY: joi.string().required(),
+    FRONTEND_BASE_URL: joi.string().required(),
   })
   .required()
 

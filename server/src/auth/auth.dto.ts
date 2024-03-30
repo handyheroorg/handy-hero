@@ -1,4 +1,6 @@
+import { Role } from '@prisma/client'
 import { IsEmail, IsEnum, IsString, MaxLength, MinLength } from 'class-validator'
+import { omit } from 'remeda'
 
 export class SigninDto {
   @IsEmail()
@@ -6,11 +8,6 @@ export class SigninDto {
 
   @IsString()
   password: string
-}
-
-enum SignupRoles {
-  CLIENT = 'CLIENT',
-  SERVICE_PROVIDER = 'SERVICE_PROVIDER',
 }
 
 export class SignupDto {
@@ -21,8 +18,16 @@ export class SignupDto {
   @IsEmail()
   email: string
 
-  @IsEnum(SignupRoles, { message: 'Invalid role provided!' })
-  role: SignupRoles
+  /** @TODO : Figure out validation for mobile number for different countries */
+  @IsString()
+  mobileNumber: string
+
+  @IsString()
+  @MinLength(2)
+  country: string
+
+  @IsEnum(omit(Role, ['ADMIN']), { message: 'Invalid role provided!' })
+  role: 'CLIENT' | 'SERVICE_PROVIDER'
 
   @IsString()
   @MinLength(8)
