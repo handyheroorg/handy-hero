@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common'
+import { Controller, Get, Param, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { User } from 'src/users/users.decorator'
 import { SanitizedUser } from 'src/users/users.types'
@@ -12,5 +12,10 @@ export class ChatRoomController {
   @Get()
   findAllForUser(@User() user: SanitizedUser) {
     return this.chatRoomService.findAllForUser(user)
+  }
+
+  @Get(':id')
+  findOneById(@Param('id') id: string, @User() user: SanitizedUser) {
+    return this.chatRoomService.findOneById(id, user)
   }
 }

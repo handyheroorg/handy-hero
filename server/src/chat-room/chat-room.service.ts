@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { CreateChatRoomDto } from './chat-room.dto'
@@ -30,6 +30,23 @@ export class ChatRoomService {
       },
       include: {
         service: { select: { id: true, name: true } },
+        client: { select: { id: true, fullName: true } },
+        provider: { select: { id: true, fullName: true } },
+      },
+    })
+  }
+
+  async findOneById(id: string, user: SanitizedUser) {
+    const room = await this.prisma.chatRoom.findFirst({ where: { id } })
+    if (user.id !== room.providerId && user.id !== room.clientId) {
+      throw new ForbiddenException('You are not allowed to access this chat room!')
+    }
+
+    return this.prisma.chatRoom.findFirst({
+      where: { id },
+      include: {
+        messages: true,
+        service: { select: { id: true, name: true, description: true, price: true, priceType: true, skills: true } },
         client: { select: { id: true, fullName: true } },
         provider: { select: { id: true, fullName: true } },
       },
