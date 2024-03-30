@@ -10,10 +10,12 @@ import { ServiceModule } from './service/service.module'
 import { FeedbackModule } from './feedback/feedback.module'
 import { BadgeModule } from './badge/badge.module'
 import { ChatRequestModule } from './chat-request/chat-request.module'
+import { NotificationModule } from './notification/notification.module'
 
 @Module({
   imports: [
     ConfigModule.forRoot(configOptions),
+    NotificationModule,
     UsersModule,
     AuthModule,
     ServiceModule,

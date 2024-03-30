@@ -12,7 +12,7 @@ export class UsersService {
   async createUser(dto: CreateUserDto) {
     const userCreated = await this.prisma.user.create({
       data: dto,
-      select: { id: true, fullName: true, email: true, role: true },
+      select: { id: true, fullName: true, email: true, role: true, mobileNumber: true },
     })
 
     if (userCreated.role === 'SERVICE_PROVIDER') {
