@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { ServiceService } from 'src/service/service.service'
@@ -29,5 +29,23 @@ export class ChatRequestService {
 
   async findAll(user: SanitizedUser) {
     return this.prisma.chatRequest.findMany({ where: { clientId: user.id }, include: CHAT_REQUEST_INCLUDE_FIELDS })
+  }
+
+  async findById(id: string) {
+    const chatRequest = await this.prisma.chatRequest.findFirst({ where: { id } })
+    if (!chatRequest) {
+      throw new NotFoundException('Chat request not found!')
+    }
+
+    return chatRequest
+  }
+
+  async deleteChatRequest(id: string, user: SanitizedUser) {
+    const chatRequest = await this.findById(id)
+    if (chatRequest.clientId !== user.id) {
+      throw new ForbiddenException('You are not allowed to delete this request!')
+    }
+
+    return this.prisma.chatRequest.delete({ where: { id } })
   }
 }

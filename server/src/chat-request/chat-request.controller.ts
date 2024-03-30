@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { RoleGuard } from 'src/auth/guards/role.guard'
 import { Role } from 'src/auth/guards/role.decorator'
@@ -24,5 +24,12 @@ export class ChatRequestController {
   @Get()
   findAll(@User() user: SanitizedUser) {
     return this.chatRequestService.findAll(user)
+  }
+
+  @UseGuards(RoleGuard)
+  @Role('CLIENT')
+  @Delete(':id')
+  deleteChatRequest(@Param('id') id: string, @User() user: SanitizedUser) {
+    return this.chatRequestService.deleteChatRequest(id, user)
   }
 }
