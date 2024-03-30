@@ -4,7 +4,7 @@ import { RoleGuard } from 'src/auth/guards/role.guard'
 import { Role } from 'src/auth/guards/role.decorator'
 import { User } from 'src/users/users.decorator'
 import { SanitizedUser } from 'src/users/users.types'
-import { CreateChatRequestDto } from './chat-request.dto'
+import { CreateChatRequestDto, ProcessChatRequestDto } from './chat-request.dto'
 import { ChatRequestService } from './chat-request.service'
 
 @UseGuards(JwtAuthGuard)
@@ -36,5 +36,12 @@ export class ChatRequestController {
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.chatRequestService.findById(id)
+  }
+
+  @UseGuards(RoleGuard)
+  @Role('SERVICE_PROVIDER')
+  @Post('process/:id')
+  processChatRequest(@Param('id') id: string, @Body() dto: ProcessChatRequestDto, @User() user: SanitizedUser) {
+    return this.chatRequestService.processChatRequest(id, dto, user)
   }
 }

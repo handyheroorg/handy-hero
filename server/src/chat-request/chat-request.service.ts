@@ -1,9 +1,9 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { ServiceService } from 'src/service/service.service'
 import { UsersService } from 'src/users/users.service'
-import { CreateChatRequestDto } from './chat-request.dto'
+import { CreateChatRequestDto, ProcessChatRequestDto } from './chat-request.dto'
 import { CHAT_REQUEST_INCLUDE_FIELDS } from './chat-request.fields'
 
 @Injectable()
@@ -47,5 +47,26 @@ export class ChatRequestService {
     }
 
     return this.prisma.chatRequest.delete({ where: { id } })
+  }
+
+  async processChatRequest(id: string, dto: ProcessChatRequestDto, user: SanitizedUser) {
+    const chatRequest = await this.findById(id)
+    if (chatRequest.serviceProviderId !== user.id) {
+      throw new ForbiddenException('You are not allowed to process this chat request!')
+    }
+
+    if (dto.status === 'REJECTED') {
+      // @TODO: Send notification to client
+      return this.prisma.chatRequest.update({ where: { id }, data: { status: 'REJECTED' } })
+    }
+
+    if (dto.status !== 'ACCEPTED') {
+      throw new BadRequestException('Invalid status provided!')
+    }
+
+    /** If a chat request is ACCEPTED then a chat room will be created */
+    // @TODO: Create a chat room
+    // @TODO: Send a notification to client
+    return this.prisma.chatRequest.update({ where: { id }, data: { status: 'ACCEPTED' } })
   }
 }
