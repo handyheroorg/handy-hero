@@ -33,6 +33,9 @@ model User {
   feedbacks           Feedback[]    @relation(name: "FeedbacksGiven")
   chatRequestCreated  ChatRequest[] @relation(name: "ChatRequestCreated")
   chatRequestReceived ChatRequest[] @relation(name: "ChatRequestReceived")
+  clientChatRooms     ChatRoom[]    @relation(name: "ClientChatRoom")
+  providerChatRooms   ChatRoom[]    @relation(name: "ProviderChatRoom")
+  Message             Message[]
 }
 
 model Location {
@@ -167,6 +170,43 @@ model ChatRequest {
 
   service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId String  @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ChatRoomStatus {
+  IN_PROGESS
+  CLOSED
+}
+
+model ChatRoom {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  status   ChatRoomStatus @default(IN_PROGESS)
+  messages Message[]
+
+  client   User   @relation(name: "ClientChatRoom", fields: [clientId], references: [id])
+  clientId String @db.ObjectId
+
+  provider   User   @relation(name: "ProviderChatRoom", fields: [providerId], references: [id])
+  providerId String @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  content String
+  seen    Boolean @default(false)
+
+  sentBy   User   @relation(fields: [sentById], references: [id], onDelete: Cascade)
+  sentById String @db.ObjectId
+
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+  chatRoomId String   @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
