@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Novu } from '@novu/node'
 import { Environment } from 'src/config/config.options'
-import { NewSubscriber } from './notification.types'
+import { NewNotificationPayload, NewSubscriber } from './notification.types'
+
+const WORKFLOW_ID = 'in-app-notifications'
 
 @Injectable()
 export class NotificationService {
@@ -15,6 +17,15 @@ export class NotificationService {
   async addSubscriber(subscriberId: string, data: NewSubscriber) {
     try {
       await this.novu.subscribers.identify(subscriberId, data)
+      return { success: true }
+    } catch {
+      return { success: false }
+    }
+  }
+
+  async sendNotification(subscriberId: string, payload: NewNotificationPayload) {
+    try {
+      await this.novu.trigger(WORKFLOW_ID, { to: subscriberId, payload })
       return { success: true }
     } catch {
       return { success: false }
