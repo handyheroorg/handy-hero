@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client'
+import { ExperienceLevel, Role } from '@prisma/client'
 import { IsEmail, IsEnum, IsString, MinLength } from 'class-validator'
 
 export class CreateUserDto {
