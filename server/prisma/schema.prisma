@@ -196,6 +196,8 @@ model ChatRoom {
   service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId String  @db.ObjectId
 
+  contractProposal ContractProposal?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -213,6 +215,26 @@ model Message {
 
   chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
   chatRoomId String   @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ProposalStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model ContractProposal {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  status       ProposalStatus @default(PENDING)
+  // Amount on which the final proposal is settled b/w client and servie provider
+  settledPrice Float
+
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+  chatRoomId String   @unique @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
