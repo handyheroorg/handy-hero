@@ -1,7 +1,7 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
-import { CreateChatRoomDto } from './chat-room.dto'
+import { CreateChatRoomDto, NewMessageDto } from './chat-room.dto'
 
 @Injectable()
 export class ChatRoomService {
@@ -51,5 +51,36 @@ export class ChatRoomService {
         provider: { select: { id: true, fullName: true } },
       },
     })
+  }
+
+  async addMessage(chatRoomId: string, dto: NewMessageDto, user: SanitizedUser) {
+    const chatRoom = await this.findOneById(chatRoomId, user)
+
+    return this.prisma.message.create({
+      data: {
+        content: dto.content,
+        seen: dto.seen,
+        chatRoom: { connect: { id: chatRoom.id } },
+        sentBy: { connect: { id: user.id } },
+      },
+    })
+  }
+
+  async findMessageById(id: string) {
+    const message = await this.prisma.message.findFirst({ where: { id } })
+    if (!message) {
+      throw new NotFoundException('Message not found!')
+    }
+
+    return message
+  }
+
+  async deleteMessage(id: string, user: SanitizedUser) {
+    const message = await this.findMessageById(id)
+    if (message.sentById !== user.id) {
+      throw new ForbiddenException('You are not allowed to delete this message!')
+    }
+
+    return this.prisma.message.delete({ where: { id: message.id } })
   }
 }

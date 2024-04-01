@@ -1,4 +1,4 @@
-import { IsMongoId } from 'class-validator'
+import { IsBoolean, IsMongoId, IsOptional, IsString } from 'class-validator'
 
 export class CreateChatRoomDto {
   @IsMongoId()
@@ -9,4 +9,13 @@ export class CreateChatRoomDto {
 
   @IsMongoId()
   serviceId: string
+}
+
+export class NewMessageDto {
+  @IsString()
+  content: string
+
+  @IsOptional()
+  @IsBoolean()
+  seen?: boolean
 }
