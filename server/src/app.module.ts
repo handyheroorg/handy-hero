@@ -12,6 +12,7 @@ import { BadgeModule } from './badge/badge.module'
 import { ChatRequestModule } from './chat-request/chat-request.module'
 import { NotificationModule } from './notification/notification.module'
 import { ChatRoomModule } from './chat-room/chat-room.module'
+import { ContractProposalModule } from './contract-proposal/contract-proposal.module'
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ChatRoomModule } from './chat-room/chat-room.module'
     BadgeModule,
     ChatRequestModule,
     ChatRoomModule,
+    ContractProposalModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
