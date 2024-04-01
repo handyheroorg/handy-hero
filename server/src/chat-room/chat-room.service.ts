@@ -47,10 +47,15 @@ export class ChatRoomService {
       include: {
         messages: true,
         service: { select: { id: true, name: true, description: true, price: true, priceType: true, skills: true } },
-        client: { select: { id: true, fullName: true } },
-        provider: { select: { id: true, fullName: true } },
+        client: { select: { id: true, fullName: true, email: true } },
+        provider: { select: { id: true, fullName: true, email: true } },
       },
     })
+  }
+
+  async closeChatRoom(id: string, user: SanitizedUser) {
+    const chatRoom = await this.findOneById(id, user)
+    return this.prisma.chatRoom.update({ where: { id: chatRoom.id }, data: { status: 'CLOSED' } })
   }
 
   async addMessage(chatRoomId: string, dto: NewMessageDto, user: SanitizedUser) {
