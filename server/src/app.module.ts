@@ -13,6 +13,7 @@ import { ChatRequestModule } from './chat-request/chat-request.module'
 import { NotificationModule } from './notification/notification.module'
 import { ChatRoomModule } from './chat-room/chat-room.module'
 import { ContractProposalModule } from './contract-proposal/contract-proposal.module'
+import { ContractModule } from './contract/contract.module'
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ContractProposalModule } from './contract-proposal/contract-proposal.mo
     ChatRequestModule,
     ChatRoomModule,
     ContractProposalModule,
+    ContractModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

@@ -3,6 +3,7 @@ import { ChatRoomService } from 'src/chat-room/chat-room.service'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { NotificationService } from 'src/notification/notification.service'
+import { ContractService } from 'src/contract/contract.service'
 import { NewContractProposalDto, ProcessContractProposalDto } from './contract-proposal.dto'
 
 @Injectable()
@@ -11,6 +12,7 @@ export class ContractProposalService {
     private readonly prisma: PrismaService,
     private readonly chatRoomService: ChatRoomService,
     private readonly notificationService: NotificationService,
+    private readonly contractService: ContractService,
   ) {}
 
   async findOneByChatRoom(chatRoomId: string) {
@@ -78,7 +80,19 @@ export class ContractProposalService {
       ])
     }
 
-    /** @TODO : If status is ACCEPTED then create a new contract */
+    if (dto.status === 'ACCEPTED') {
+      await Promise.all([
+        this.contractService.createContract({
+          clientId: chatRoom.clientId,
+          serviceProviderId: chatRoom.providerId,
+          serviceId: chatRoom.serviceId,
+          settledPrice: proposal.settledPrice,
+        }),
+        this.notificationService.sendNotification(chatRoom.clientId, {
+          body: `Your proposal has been accepted for ${chatRoom.service.name}.`,
+        }),
+      ])
+    }
 
     return this.prisma.contractProposal.update({ where: { id }, data: { status: dto.status } })
   }

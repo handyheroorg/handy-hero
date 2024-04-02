@@ -265,4 +265,6 @@ model Contract {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([clientId, serviceProviderId, serviceId])
 }
