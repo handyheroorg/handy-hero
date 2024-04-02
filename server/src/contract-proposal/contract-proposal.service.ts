@@ -87,6 +87,8 @@ export class ContractProposalService {
           serviceProviderId: chatRoom.providerId,
           serviceId: chatRoom.serviceId,
           settledPrice: proposal.settledPrice,
+          title: proposal.title,
+          description: proposal.description,
         }),
         this.notificationService.sendNotification(chatRoom.clientId, {
           body: `Your proposal has been accepted for ${chatRoom.service.name}.`,

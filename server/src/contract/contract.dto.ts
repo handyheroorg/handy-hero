@@ -2,6 +2,12 @@ import { IsMongoId, IsNumber, IsString } from 'class-validator'
 
 export class CreateContractDto {
   @IsString()
+  title: string
+
+  @IsString()
+  description: string
+
+  @IsString()
   @IsMongoId()
   clientId: string
 

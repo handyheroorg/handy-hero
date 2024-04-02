@@ -254,6 +254,11 @@ enum ContractStatus {
 model Contract {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
+  title        String
+  description  String
+  status       ContractStatus @default(ON_GOING)
+  settledPrice Float
+
   client   User   @relation(name: "ContractAwarded", fields: [clientId], references: [id])
   clientId String @db.ObjectId
 
@@ -262,9 +267,6 @@ model Contract {
 
   service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId String  @db.ObjectId
-
-  status       ContractStatus @default(ON_GOING)
-  settledPrice Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

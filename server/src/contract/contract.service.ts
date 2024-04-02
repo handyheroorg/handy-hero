@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { CreateContractDto } from './contract.dto'
@@ -55,5 +55,28 @@ export class ContractService {
         },
       },
     })
+  }
+
+  async findOneById(id: string, user: SanitizedUser) {
+    const contract = await this.prisma.contract.findFirst({ where: { id } })
+    if (!contract) {
+      throw new BadRequestException('Contract not found!')
+    }
+
+    if (contract.clientId !== user.id && contract.serviceProviderId !== user.id) {
+      throw new ForbiddenException('You are not allowed to view this contract!')
+    }
+
+    return contract
+  }
+
+  async endContract(id: string, user: SanitizedUser) {
+    const contract = await this.findOneById(id, user)
+
+    if (contract.status === 'COMPLETED') {
+      throw new BadRequestException('This contract has been already ended!')
+    }
+
+    return this.prisma.contract.update({ where: { id: contract.id }, data: { status: 'COMPLETED' } })
   }
 }
