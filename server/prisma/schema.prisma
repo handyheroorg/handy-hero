@@ -35,7 +35,9 @@ model User {
   chatRequestReceived ChatRequest[] @relation(name: "ChatRequestReceived")
   clientChatRooms     ChatRoom[]    @relation(name: "ClientChatRoom")
   providerChatRooms   ChatRoom[]    @relation(name: "ProviderChatRoom")
-  Message             Message[]
+  messages            Message[]
+  contractsAwarded    Contract[]    @relation(name: "ContractAwarded")
+  contractsReceived   Contract[]    @relation(name: "ContractReceived")
 }
 
 model Location {
@@ -103,6 +105,7 @@ model Service {
   feedbacks    Feedback[]
   chatRequests ChatRequest[]
   chatRooms    ChatRoom[]
+  contracts    Contract[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -235,6 +238,30 @@ model ContractProposal {
 
   chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
   chatRoomId String   @unique @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ContractStatus {
+  ON_GOING
+  COMPLETED
+}
+
+model Contract {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  client   User   @relation(name: "ContractAwarded", fields: [clientId], references: [id])
+  clientId String @db.ObjectId
+
+  serviceProvider   User   @relation(name: "ContractReceived", fields: [serviceProviderId], references: [id])
+  serviceProviderId String @db.ObjectId
+
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId String  @db.ObjectId
+
+  status       ContractStatus @default(ON_GOING)
+  settledPrice Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
