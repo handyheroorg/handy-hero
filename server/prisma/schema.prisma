@@ -232,7 +232,10 @@ enum ProposalStatus {
 model ContractProposal {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  status       ProposalStatus @default(PENDING)
+  title       String
+  description String
+  status      ProposalStatus @default(PENDING)
+
   // Amount on which the final proposal is settled b/w client and servie provider
   settledPrice Float
 

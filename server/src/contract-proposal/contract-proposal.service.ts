@@ -40,7 +40,7 @@ export class ContractProposalService {
     }
 
     const newProposal = await this.prisma.contractProposal.create({
-      data: { chatRoom: { connect: { id: chatRoom.id } }, settledPrice: dto.settledPrice },
+      data: { chatRoom: { connect: { id: chatRoom.id } }, ...dto },
     })
 
     await this.notificationService.sendEmailAndInApp({
