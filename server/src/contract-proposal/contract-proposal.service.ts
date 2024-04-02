@@ -96,4 +96,12 @@ export class ContractProposalService {
 
     return this.prisma.contractProposal.update({ where: { id }, data: { status: dto.status } })
   }
+
+  findAll(user: SanitizedUser) {
+    return this.prisma.contractProposal.findMany({
+      where: {
+        OR: [{ chatRoom: { clientId: user.id } }, { chatRoom: { providerId: user.id } }],
+      },
+    })
+  }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { RoleGuard } from 'src/auth/guards/role.guard'
 import { Role } from 'src/auth/guards/role.decorator'
@@ -28,5 +28,10 @@ export class ContractProposalController {
   @Patch(':id')
   processProposal(@Param('id') id: string, @Body() dto: ProcessContractProposalDto, @User() user: SanitizedUser) {
     return this.contractProposalService.processProposal(id, dto, user)
+  }
+
+  @Get()
+  findAll(@User() user: SanitizedUser) {
+    return this.contractProposalService.findAll(user)
   }
 }
