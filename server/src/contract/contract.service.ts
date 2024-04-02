@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { SanitizedUser } from 'src/users/users.types'
 import { CreateContractDto } from './contract.dto'
 
 @Injectable()
@@ -25,6 +26,33 @@ export class ContractService {
         client: { connect: { id: dto.clientId } },
         service: { connect: { id: dto.serviceId } },
         settledPrice: dto.settledPrice,
+      },
+    })
+  }
+
+  findAll(user: SanitizedUser) {
+    return this.prisma.contract.findMany({
+      where: {
+        OR: [{ serviceProviderId: user.id }, { clientId: user.id }],
+      },
+      include: {
+        service: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            price: true,
+            priceType: true,
+            skills: true,
+            thumbnail: true,
+          },
+        },
+        client: {
+          select: { id: true, fullName: true, avatar: true },
+        },
+        serviceProvider: {
+          select: { id: true, fullName: true, avatar: true },
+        },
       },
     })
   }
