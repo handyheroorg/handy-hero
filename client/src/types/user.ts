@@ -11,4 +11,5 @@ export type User = Timestamps & {
   fullName: string
   email: string
   role: Role
+  avatar?: string | null
 }

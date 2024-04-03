@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuthContext } from './hooks'
 import Loading from './components/loading'
+import Navbar from './components/navbar'
 
 export default function Root() {
   const { isAuthInProgress, user } = useAuthContext()
@@ -17,5 +18,10 @@ export default function Root() {
     return <Navigate to="/auth/login" />
   }
 
-  return <Outlet />
+  return (
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  )
 }

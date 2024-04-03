@@ -37,7 +37,7 @@ export function Login() {
                 <FormLabel>Email</FormLabel>
 
                 <FormControl>
-                  <Input placeholder="Enter your email address" disabled={loginMutation.isPending} {...field} />
+                  <Input placeholder="Enter your email address" disabled={loginMutation?.isPending} {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -56,7 +56,7 @@ export function Login() {
                   <Input
                     type="password"
                     placeholder="Enter your password"
-                    disabled={loginMutation.isPending}
+                    disabled={loginMutation?.isPending}
                     {...field}
                   />
                 </FormControl>
@@ -66,7 +66,7 @@ export function Login() {
             )}
           />
 
-          <Button className="w-max" type="submit" icon={<LogInIcon />} loading={loginMutation.isPending}>
+          <Button className="w-max" type="submit" icon={<LogInIcon />} loading={loginMutation?.isPending}>
             Login
           </Button>
         </form>
