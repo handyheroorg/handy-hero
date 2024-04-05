@@ -12,4 +12,9 @@ export type User = Timestamps & {
   email: string
   role: Role
   avatar?: string | null
+  county: string
+  isOnboarded: boolean
+  mobileNumber: string
+  createdAt: string
+  updatedAt: string
 }

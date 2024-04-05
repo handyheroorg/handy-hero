@@ -21,11 +21,10 @@ export default function Root() {
   }
 
   return (
-    <div>
-      <NovuProvider applicationIdentifier={env.VITE_NOVU_APP_ID} subscriberId={user.id}>
-        <Navbar />
-        <Outlet />
-      </NovuProvider>
-    </div>
+    <NovuProvider applicationIdentifier={env.VITE_NOVU_APP_ID} subscriberId={user.id}>
+      <Navbar />
+      <div className="w-full" style={{ height: Navbar.NAVBAR_HEIGHT }} />
+      <Outlet />
+    </NovuProvider>
   )
 }

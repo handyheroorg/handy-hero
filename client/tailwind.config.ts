@@ -15,6 +15,7 @@ const config = {
     extend: {
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
+        amita: ['Amita', 'serif'],
       },
       colors: {
         border: 'hsl(var(--border))',

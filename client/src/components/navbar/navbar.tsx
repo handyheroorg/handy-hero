@@ -8,13 +8,15 @@ import { useAuthContext } from '@/hooks'
 
 type NavbarProps = BasicProps
 
+const NAVBAR_HEIGHT = 64
+
 export default function Navbar({ className, style }: NavbarProps) {
   const { user } = useAuthContext()
 
   return (
     <nav
-      className={cn('fixed top-0 left-0 w-full h-16 bg-white/50 backdrop-blur-lg border-b', className)}
-      style={style}
+      className={cn('fixed top-0 left-0 w-full  bg-white/50 backdrop-blur-lg border-b', className)}
+      style={{ ...style, height: NAVBAR_HEIGHT }}
     >
       <Container className="h-full flex items-center justify-between">
         <h1 className="text-2xl font-bold">Handy Hero</h1>
@@ -42,3 +44,5 @@ export default function Navbar({ className, style }: NavbarProps) {
     </nav>
   )
 }
+
+Navbar.NAVBAR_HEIGHT = NAVBAR_HEIGHT
