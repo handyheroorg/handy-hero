@@ -1,7 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom'
+import { NovuProvider } from '@novu/notification-center'
 import { useAuthContext } from './hooks'
 import Loading from './components/loading'
 import Navbar from './components/navbar'
+import { env } from './lib'
 
 export default function Root() {
   const { isAuthInProgress, user } = useAuthContext()
@@ -20,8 +22,10 @@ export default function Root() {
 
   return (
     <div>
-      <Navbar />
-      <Outlet />
+      <NovuProvider applicationIdentifier={env.VITE_NOVU_APP_ID} subscriberId={user.id}>
+        <Navbar />
+        <Outlet />
+      </NovuProvider>
     </div>
   )
 }

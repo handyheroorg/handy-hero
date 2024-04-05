@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom'
-import { BellIcon, HelpCircleIcon } from 'lucide-react'
+import { HelpCircleIcon } from 'lucide-react'
+import { NotificationBell, PopoverNotificationCenter } from '@novu/notification-center'
 import { cn } from '@/lib'
 import { BasicProps } from '@/types'
 import Container from '../container'
@@ -23,7 +24,9 @@ export default function Navbar({ className, style }: NavbarProps) {
             <HelpCircleIcon className="size-5" />
           </NavLink>
 
-          <BellIcon className="size-5 text-muted-foreground" />
+          <PopoverNotificationCenter colorScheme="light">
+            {({ unseenCount }) => <NotificationBell unseenCount={unseenCount} />}
+          </PopoverNotificationCenter>
 
           <Link to="/settings">
             {user?.avatar ? (
