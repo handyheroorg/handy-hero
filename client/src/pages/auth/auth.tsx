@@ -1,10 +1,12 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useSearchParams } from 'react-router-dom'
 import { AuthIllustration } from '@/components/icons'
 import { useAuthContext } from '@/hooks'
 import Loading from '@/components/loading'
 
 export default function AuthLayout() {
   const { isAuthInProgress, user } = useAuthContext()
+  const [searchParams] = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo') ?? '/'
 
   if (isAuthInProgress) {
     return (
@@ -15,7 +17,7 @@ export default function AuthLayout() {
   }
 
   if (user) {
-    return <Navigate to="/" />
+    return <Navigate to={redirectTo} />
   }
 
   return (

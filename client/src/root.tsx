@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { NovuProvider } from '@novu/notification-center'
 import { useAuthContext } from './hooks'
 import Loading from './components/loading'
@@ -7,6 +7,7 @@ import { env } from './lib'
 
 export default function Root() {
   const { isAuthInProgress, user } = useAuthContext()
+  const location = useLocation()
 
   if (isAuthInProgress) {
     return (
@@ -17,7 +18,7 @@ export default function Root() {
   }
 
   if (!user) {
-    return <Navigate to="/auth/login" />
+    return <Navigate to={{ pathname: '/auth/login', search: `?redirectTo=${location.pathname}` }} />
   }
 
   return (

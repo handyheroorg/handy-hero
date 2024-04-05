@@ -5,6 +5,7 @@ import Error from '@/pages/error'
 import Home from '@/pages/home'
 import AuthLayout, { Login, Signup } from '@/pages/auth'
 import Welcome from '@/pages/welcome'
+import Settings, { BasicSettings } from '@/pages/settings'
 
 export const router = createBrowserRouter([
   /** Authenticated App */
@@ -18,8 +19,18 @@ export const router = createBrowserRouter([
         index: true,
       },
       {
-        path: '/welcome',
+        path: 'welcome',
         element: <Welcome />,
+      },
+      {
+        path: 'settings',
+        element: <Settings />,
+        children: [
+          {
+            index: true,
+            element: <BasicSettings />,
+          },
+        ],
       },
     ],
   },
