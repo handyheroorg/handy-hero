@@ -3,7 +3,6 @@ import { BellIcon, HelpCircleIcon } from 'lucide-react'
 import { cn } from '@/lib'
 import { BasicProps } from '@/types'
 import Container from '../container'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { useAuthContext } from '@/hooks'
 
 type NavbarProps = BasicProps
@@ -19,26 +18,23 @@ export default function Navbar({ className, style }: NavbarProps) {
       <Container className="h-full flex items-center justify-between">
         <h1 className="text-lg font-bold">Handy Hero</h1>
 
-        <ul className="flex items-center gap-x-6">
-          <li>
-            <NavLink to="/help" className={({ isActive }) => (isActive ? 'text-black' : 'text-muted-foreground')}>
-              <HelpCircleIcon className="size-5" />
-            </NavLink>
-          </li>
-          <li>
-            <BellIcon className="size-5 text-muted-foreground" />
-          </li>
-          <li>
-            <Link to="/settings">
-              <Avatar>
-                <Avatar>
-                  <AvatarImage src={user?.avatar ?? '/avatar.png'} alt="@shadcn" />
-                  <AvatarFallback>{user?.fullName}</AvatarFallback>
-                </Avatar>
-              </Avatar>
-            </Link>
-          </li>
-        </ul>
+        <div className="flex items-center gap-x-6">
+          <NavLink to="/help" className={({ isActive }) => (isActive ? 'text-black' : 'text-muted-foreground')}>
+            <HelpCircleIcon className="size-5" />
+          </NavLink>
+
+          <BellIcon className="size-5 text-muted-foreground" />
+
+          <Link to="/settings">
+            {user?.avatar ? (
+              <img className="w-8 h-8 object-cover" src={user.avatar} />
+            ) : (
+              <div className="font-medium flex items-center justify-center w-8 h-8 border rounded-full">
+                {user?.fullName[0]}
+              </div>
+            )}
+          </Link>
+        </div>
       </Container>
     </nav>
   )
