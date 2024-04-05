@@ -12,6 +12,15 @@ export class ServiceService {
   async createService(dto: CreateServiceDto, user: SanitizedUser) {
     const profile = await this.usersService.findProfile(user.id)
 
+    const totalServicesCreated = await this.prisma.service.count({ where: { profileId: profile.id } })
+
+    /**
+     * If this is user's first service, then  onboard the user
+     */
+    if (totalServicesCreated === 0) {
+      await this.usersService.onboardUser(user)
+    }
+
     return this.prisma.service.create({
       data: {
         ...dto,

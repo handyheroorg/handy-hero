@@ -13,11 +13,11 @@ export default function Navbar({ className, style }: NavbarProps) {
 
   return (
     <nav
-      className={cn('fixed top-0 left-0 w-full h-14 bg-white/50 backdrop-blur-lg border-b', className)}
+      className={cn('fixed top-0 left-0 w-full h-16 bg-white/50 backdrop-blur-lg border-b', className)}
       style={style}
     >
       <Container className="h-full flex items-center justify-between">
-        <h1 className="text-lg font-bold">Handy Hero</h1>
+        <h1 className="text-2xl font-bold">Handy Hero</h1>
 
         <div className="flex items-center gap-x-6">
           <NavLink to="/help" className={({ isActive }) => (isActive ? 'text-black' : 'text-muted-foreground')}>

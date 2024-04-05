@@ -26,6 +26,8 @@ export class ContractService {
         client: { connect: { id: dto.clientId } },
         service: { connect: { id: dto.serviceId } },
         settledPrice: dto.settledPrice,
+        title: dto.title,
+        description: dto.description,
       },
     })
   }

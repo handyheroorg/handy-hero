@@ -17,12 +17,13 @@ model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   fullName     String
-  email        String  @unique
+  email        String   @unique
   mobileNumber String
   country      String
   avatar       String?
   role         Role
   password     String
+  isOnboarded  Boolean? @default(false)
 
   location Location?
   // Each SERVICE_PROVIDER will have their own profile
