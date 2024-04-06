@@ -1,4 +1,4 @@
-import { Outlet, NavLink as ReactNavLink } from 'react-router-dom'
+import { Outlet, NavLink as ReactNavLink, useLocation } from 'react-router-dom'
 import Container from '@/components/container'
 import { cn } from '@/lib'
 
@@ -31,11 +31,11 @@ export default function Settings() {
 }
 
 function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
+  const pathname = useLocation().pathname
+  const isActive = to === pathname
+
   return (
-    <ReactNavLink
-      to={to}
-      className={({ isActive }) => cn('py-2 px-4 border-l-2 block', { 'text-primary border-l-primary': isActive })}
-    >
+    <ReactNavLink to={to} className={cn('py-2 px-4 border-l-2 block', { 'text-primary border-l-primary': isActive })}>
       {children}
     </ReactNavLink>
   )

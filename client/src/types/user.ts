@@ -1,3 +1,4 @@
+import { Education, Experience } from '@/schema'
 import { Timestamps } from './timestamp'
 
 export enum Role {
@@ -22,4 +23,23 @@ export type Location = Timestamps & {
   id: string
   latitude: number
   longitude: number
+}
+
+export type Profile = {
+  id: string
+  userId: string
+  occupation?: string
+  about?: string
+  fullAddress?: string
+  languages: string[]
+  skills: string[]
+  experienceLevel: ExperienceLevel
+  education: Education[]
+  experience: Experience[]
+}
+
+export enum ExperienceLevel {
+  ENTRY = 'ENTRY',
+  INTERMEDIATE = 'INTERMEDIATE',
+  EXPERT = 'EXPERT',
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { RoleGuard } from 'src/auth/guards/role.guard'
 import { Role } from 'src/auth/guards/role.decorator'
@@ -20,6 +20,13 @@ export class UsersController {
   @Patch('location')
   updateLocation(@Body() dto: UpdateLocationDto, @User() user: SanitizedUser) {
     return this.userService.updateLocation(dto, user)
+  }
+
+  @UseGuards(RoleGuard)
+  @Role('SERVICE_PROVIDER')
+  @Get('profile')
+  findProfile(@User() user: SanitizedUser) {
+    return this.userService.findProfile(user.id)
   }
 
   @UseGuards(RoleGuard)
