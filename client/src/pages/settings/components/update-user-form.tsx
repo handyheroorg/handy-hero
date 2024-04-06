@@ -40,7 +40,7 @@ export default function UpdateUserForm({ className, style, onCancel }: UpdateUse
   return (
     <Form {...form}>
       <form
-        className={cn('px-8 py-6 rounded-3xl border relative grid grid-cols-1 gap-4', className)}
+        className={cn('px-8 py-6 rounded-xl border grid grid-cols-1 gap-4', className)}
         style={style}
         onSubmit={form.handleSubmit((values) => {
           updateUserMutation.mutate(values)

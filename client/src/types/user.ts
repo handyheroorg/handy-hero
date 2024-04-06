@@ -15,6 +15,11 @@ export type User = Timestamps & {
   country: string
   isOnboarded: boolean
   mobileNumber: string
-  createdAt: string
-  updatedAt: string
+  location: Location | null
+}
+
+export type Location = Timestamps & {
+  id: string
+  latitude: number
+  longitude: number
 }

@@ -23,7 +23,7 @@ export class UsersService {
   }
 
   async findUserById(id: string) {
-    return this.prisma.user.findFirst({ where: { id } })
+    return this.prisma.user.findFirst({ where: { id }, include: { location: true } })
   }
 
   async findUserByEmail(email: string) {
