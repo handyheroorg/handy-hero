@@ -12,7 +12,7 @@ export default function Welcome() {
   return (
     <Container className="py-4 h-screen flex items-center gap-4 flex-col md:flex-row -mt-16">
       <div className="flex-1">
-        <h1 className="mb-4 text-5xl md:text-6xl font-bold font-amita tracking-tighter leading-10">
+        <h1 className="mb-4 text-5xl md:text-6xl font-bold font-amita tracking-tighter leading-[1.2] md:leading-[1.2]">
           Welcome {user.fullName.split(' ')[0]}! <br />
           Let&apos;s start your journey with handy hero.
         </h1>
