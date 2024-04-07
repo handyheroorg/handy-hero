@@ -14,6 +14,7 @@ import { NotificationModule } from './notification/notification.module'
 import { ChatRoomModule } from './chat-room/chat-room.module'
 import { ContractProposalModule } from './contract-proposal/contract-proposal.module'
 import { ContractModule } from './contract/contract.module'
+import { FilesModule } from './files/files.module'
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ContractModule } from './contract/contract.module'
     ChatRoomModule,
     ContractProposalModule,
     ContractModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

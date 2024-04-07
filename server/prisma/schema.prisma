@@ -39,6 +39,7 @@ model User {
   messages            Message[]
   contractsAwarded    Contract[]    @relation(name: "ContractAwarded")
   contractsReceived   Contract[]    @relation(name: "ContractReceived")
+  files               File[]
 }
 
 model Location {
@@ -275,4 +276,19 @@ model Contract {
   updatedAt DateTime @updatedAt
 
   @@unique([clientId, serviceProviderId, serviceId])
+}
+
+model File {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  uploadedBy   User   @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
+  uploadedById String @db.ObjectId
+
+  originalName String
+  mimetype     String
+  size         Int
+  publicUrl    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
