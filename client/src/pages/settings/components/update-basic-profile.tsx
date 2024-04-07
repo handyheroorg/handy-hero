@@ -2,6 +2,7 @@ import { RotateCwIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { Button, Form, FormControl, FormField, FormItem, FormLabel, Input, Textarea } from '@/components/ui'
 import { cn, handleError } from '@/lib'
 import { BasicProps, Profile } from '@/types'
@@ -33,6 +34,7 @@ export default function UpdateBasicProfile({ className, style, profile, onCancel
     onError: handleError,
     onSuccess: (updatedProfile) => {
       qc.setQueryData(['profile'], updatedProfile)
+      toast.success('Profile updated successfully!')
       onCancel()
     },
   })

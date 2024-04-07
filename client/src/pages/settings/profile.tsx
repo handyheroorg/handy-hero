@@ -5,8 +5,9 @@ import { match } from 'ts-pattern'
 import { Button, Skeleton } from '@/components/ui'
 import { fetchUserProfile } from '@/queries'
 import ErrorMessage from '@/components/error-message'
-import { EXPERIENCE_LEVELS_MAPS, getErrorMessage } from '@/lib'
+import { getErrorMessage } from '@/lib'
 import UpdateBasicProfile from './components/update-basic-profile'
+import UpdateExperienceLevel from './components/update-experience-level'
 
 const NA = 'N/A'
 
@@ -86,17 +87,7 @@ export function Profile() {
         <div className="px-8 py-6 rounded-xl border">
           <h1 className="text-2xl mb-4">Experience Level</h1>
 
-          <div className="flex items-center gap-4">
-            {Object.values(EXPERIENCE_LEVELS_MAPS).map((level) => (
-              <div
-                key={level.title}
-                className="hover:border-primary border rounded-lg px-6 py-4 flex-1 min-h-36 flex flex-col justify-center gap-2 cursor-pointer"
-              >
-                <p className="text-lg font-medium">{level.title}</p>
-                <p className="text-sm text-muted-foreground">{level.description}</p>
-              </div>
-            ))}
-          </div>
+          <UpdateExperienceLevel selectedExperienceLevel={profile.experienceLevel} />
         </div>
       </div>
     ))
