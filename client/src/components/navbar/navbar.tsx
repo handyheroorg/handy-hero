@@ -19,7 +19,9 @@ export default function Navbar({ className, style }: NavbarProps) {
       style={{ ...style, height: NAVBAR_HEIGHT }}
     >
       <Container className="h-full flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Handy Hero</h1>
+        <Link className="text-2xl font-bold" to="/">
+          Handy Hero
+        </Link>
 
         <div className="flex items-center gap-x-6">
           <NavLink to="/help" className={({ isActive }) => (isActive ? 'text-black' : 'text-muted-foreground')}>
