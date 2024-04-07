@@ -1,5 +1,5 @@
 import { apiClient } from '@/lib'
-import { UpdateUserSchema } from '@/schema'
+import { UpdateProfileSchema, UpdateUserSchema } from '@/schema'
 import { Location, Profile, User } from '@/types'
 
 export async function updateUser(dto: UpdateUserSchema) {
@@ -14,5 +14,10 @@ export async function updateLocation(dto: { latitude: number; longitude: number 
 
 export async function fetchUserProfile() {
   const { data } = await apiClient.get<Profile>('/users/profile')
+  return data
+}
+
+export async function updateProfile(dto: UpdateProfileSchema) {
+  const { data } = await apiClient.patch<Profile>('/users/profile', dto)
   return data
 }

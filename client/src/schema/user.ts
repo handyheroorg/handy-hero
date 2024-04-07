@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { ExperienceLevel } from '@/types'
 
 export const updateUserSchema = z.object({
   fullName: z.string(),
@@ -39,3 +40,17 @@ export const experienceSchema = z
     }
   })
 export type Experience = z.infer<typeof experienceSchema>
+
+export const updateProfileSchema = z
+  .object({
+    occupation: z.string(),
+    about: z.string().min(10, 'Please enter at least 10 characters!'),
+    fullAddress: z.string().min(10, 'Please enter at least 10 characters!'),
+    languages: z.array(z.string().min(2, 'Please enter at least 2 characters!')),
+    skills: z.array(z.string().min(2, 'Please enter at least 2 characters!')),
+    experienceLevel: z.nativeEnum(ExperienceLevel),
+    education: z.array(educationSchema),
+    experience: z.array(experienceSchema),
+  })
+  .partial()
+export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>

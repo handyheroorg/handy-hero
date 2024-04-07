@@ -6,6 +6,7 @@ import { Button, Skeleton } from '@/components/ui'
 import { fetchUserProfile } from '@/queries'
 import ErrorMessage from '@/components/error-message'
 import { EXPERIENCE_LEVELS_MAPS, getErrorMessage } from '@/lib'
+import UpdateBasicProfile from './components/update-basic-profile'
 
 const NA = 'N/A'
 
@@ -31,8 +32,15 @@ export function Profile() {
       <div>
         <h1 className="text-2xl font-bold mb-4">Basic Profile</h1>
         <div className="mb-8">
-          {isEdit ? null : (
-            <div className="px-8 py-6 rounded-xl border">
+          {isEdit ? (
+            <UpdateBasicProfile
+              profile={profile}
+              onCancel={() => {
+                setIsEdit(false)
+              }}
+            />
+          ) : (
+            <div className="px-8 py-6 rounded-xl border relative">
               <Button
                 icon={<PencilIcon />}
                 variant="outline"
@@ -44,22 +52,33 @@ export function Profile() {
 
               <h2 className="text-2xl font-medium mb-6">{profile.occupation ?? 'Occupation'}</h2>
               <p className="text-muted-foreground mb-4">{profile.about}</p>
+              <p className="font-medium mb-4">{profile?.fullAddress ?? NA}</p>
 
-              <div className="mb-4">
-                <p className="text-sm text-muted-foreground">Full Address</p>
-                <p className="font-medium">{profile?.fullAddress ?? NA}</p>
-              </div>
-
-              <div className="mb-4">
-                <p className="text-sm text-muted-foreground mb-2">Languages</p>
-                <div className="flex items-center gap-4">
-                  {profile.languages.map((language) => (
-                    <div key={language} className="px-4 py-2 text-center rounded-full bg-muted capitalize">
-                      {language}
-                    </div>
-                  ))}
+              {!!profile.languages.length && (
+                <div className="mb-4">
+                  <p className="text-sm text-muted-foreground mb-2">Languages</p>
+                  <div className="flex items-center gap-4">
+                    {profile.languages.map((language) => (
+                      <div key={language} className="px-4 py-2 text-center rounded-full bg-muted capitalize">
+                        {language}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {!!profile.skills.length && (
+                <div className="mb-4">
+                  <p className="text-sm text-muted-foreground mb-2">Skills</p>
+                  <div className="flex items-center gap-4">
+                    {profile.skills.map((skill) => (
+                      <div key={skill} className="px-4 py-2 text-center rounded-full bg-muted capitalize">
+                        {skill}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
