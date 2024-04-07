@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { UsersService } from 'src/users/users.service'
@@ -12,10 +12,14 @@ export class ServiceService {
   async createService(dto: CreateServiceDto, user: SanitizedUser) {
     const profile = await this.usersService.findProfile(user.id)
 
+    if (profile.completionPercentage >= 60) {
+      throw new BadRequestException('Your profile must be at least 60% completed!')
+    }
+
     const totalServicesCreated = await this.prisma.service.count({ where: { profileId: profile.id } })
 
     /**
-     * If this is user's first service, then  onboard the user
+     * If this is user's first service, then onboard the user
      */
     if (totalServicesCreated === 0) {
       await this.usersService.onboardUser(user)

@@ -3,7 +3,7 @@ import { PencilIcon } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
 import dayjs from 'dayjs'
-import { Button, Skeleton } from '@/components/ui'
+import { Alert, AlertDescription, AlertTitle, Button, Skeleton } from '@/components/ui'
 import { fetchUserProfile } from '@/queries'
 import ErrorMessage from '@/components/error-message'
 import { formatEnum, getErrorMessage } from '@/lib'
@@ -35,6 +35,11 @@ export function Profile() {
     .with({ status: 'error' }, ({ error }) => <ErrorMessage description={getErrorMessage(error)} />)
     .with({ status: 'success' }, ({ data: profile }) => (
       <div>
+        <Alert className="mb-4" variant={profile.completionPercentage < 100 ? 'warning' : 'success'}>
+          <AlertTitle>{profile.completionPercentage < 100 ? 'Incomplete Profile' : 'Profile Completed'}</AlertTitle>
+          <AlertDescription>Your profile is {profile.completionPercentage}% complete.</AlertDescription>
+        </Alert>
+
         <h1 className="text-2xl font-bold mb-4">Basic Profile</h1>
         <div className="mb-8">
           {isEdit ? (
