@@ -23,7 +23,7 @@ export default function UpdateExperienceLevel({
   })
 
   return (
-    <div className={cn('flex items-center gap-4', className)} style={style}>
+    <div className={cn('flex items-center gap-4 flex-col md:flex-row', className)} style={style}>
       {Object.entries(EXPERIENCE_LEVELS_MAPS).map(([level, levelData]) => {
         const isSelected = level === selectedExperienceLevel
 
@@ -31,7 +31,7 @@ export default function UpdateExperienceLevel({
           <div
             key={levelData.title}
             className={cn(
-              'hover:border-primary border rounded-lg px-6 py-4 flex-1 min-h-36 flex flex-col justify-center gap-2 cursor-pointer',
+              'hover:border-primary border rounded-lg px-6 py-4 flex-1 min-h-36 flex flex-col justify-center gap-2 cursor-pointer w-full',
               isSelected && 'border-primary',
               updateProfileMutation.isPending && 'opacity-50',
             )}

@@ -6,10 +6,11 @@ import dayjs from 'dayjs'
 import { Button, Skeleton } from '@/components/ui'
 import { fetchUserProfile } from '@/queries'
 import ErrorMessage from '@/components/error-message'
-import { getErrorMessage } from '@/lib'
+import { formatEnum, getErrorMessage } from '@/lib'
 import UpdateBasicProfile from './components/update-basic-profile'
 import UpdateExperienceLevel from './components/update-experience-level'
 import AddEducationDialog from './components/add-education-dialog'
+import AddExperienceDialog from './components/add-experience-dialog'
 
 const NA = 'N/A'
 const DATE_FORMAT = 'DD MMM, YYYY'
@@ -102,7 +103,7 @@ export function Profile() {
 
           {profile.education.map((study, i) => (
             <div key={i} className="border-l pl-4 mb-8">
-              <h1 className="text-xl font-medium">{study.school}</h1>
+              <h1 className="text-xl font-medium mb-2">{study.school}</h1>
               <p>
                 {study.degree} {!!study.fieldOfStudy && `(${study.fieldOfStudy})`}
               </p>
@@ -112,6 +113,36 @@ export function Profile() {
               </p>
 
               <p>{study.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="px-8 py-6 rounded-xl border mb-8">
+          <div className="flex items-center gap-x-4 justify-between mb-4">
+            <h1 className="text-2xl mb-4">Experience</h1>
+
+            <AddExperienceDialog experience={profile.experience} />
+          </div>
+
+          {profile.experience.map((exp, i) => (
+            <div key={i} className="border-l pl-4 mb-8">
+              <div className="flex md:items-center md:justify-between flex-col md:flex-row">
+                <div>
+                  <h1 className="text-xl font-medium mb-4">{exp.title}</h1>
+                  <p>
+                    {exp.company} {!!exp.industry && `(${exp.industry})`}
+                  </p>
+                </div>
+
+                <div>{formatEnum(exp.employmentType)}</div>
+              </div>
+
+              <p className="mb-4 text-sm">
+                {dayjs(exp.startDate).format(DATE_FORMAT)} -{' '}
+                {exp.currentlyWorkingHere ? 'Present' : dayjs(exp.endDate).format(DATE_FORMAT)}
+              </p>
+
+              <p className="text-sm text-muted-foreground ">{exp.description}</p>
             </div>
           ))}
         </div>
