@@ -15,7 +15,7 @@ export default function Navbar({ className, style }: NavbarProps) {
 
   return (
     <nav
-      className={cn('fixed top-0 left-0 w-full  bg-white/50 backdrop-blur-lg border-b', className)}
+      className={cn('fixed top-0 left-0 w-full  bg-white/50 backdrop-blur-lg border-b z-50', className)}
       style={{ ...style, height: NAVBAR_HEIGHT }}
     >
       <Container className="h-full flex items-center justify-between">

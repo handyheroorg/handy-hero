@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import dayjs from 'dayjs'
 import { ExperienceLevel } from '@/types'
 
 export const updateUserSchema = z.object({
@@ -9,14 +10,24 @@ export const updateUserSchema = z.object({
 })
 export type UpdateUserSchema = z.infer<typeof updateUserSchema>
 
-export const educationSchema = z.object({
-  school: z.string(),
-  degree: z.string(),
-  fieldOfStudy: z.string().optional(),
-  startDate: z.date(),
-  endDate: z.date(),
-  description: z.string(),
-})
+export const educationSchema = z
+  .object({
+    school: z.string().min(2, 'Please enter at least 2 characters!'),
+    degree: z.string().min(2, 'Please enter at least 2 characters!'),
+    fieldOfStudy: z.string().optional(),
+    startDate: z.date(),
+    endDate: z.date(),
+    description: z.string().min(10, 'Please enter at least 10 characters!'),
+  })
+  .superRefine((values, ctx) => {
+    if (dayjs(values.endDate).isBefore(values.startDate)) {
+      ctx.addIssue({
+        message: 'End date must be after start date',
+        code: 'custom',
+        path: ['endDate'],
+      })
+    }
+  })
 export type Education = z.infer<typeof educationSchema>
 
 export const experienceSchema = z

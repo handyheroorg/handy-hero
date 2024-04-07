@@ -8,6 +8,7 @@ import ErrorMessage from '@/components/error-message'
 import { getErrorMessage } from '@/lib'
 import UpdateBasicProfile from './components/update-basic-profile'
 import UpdateExperienceLevel from './components/update-experience-level'
+import AddEducationDialog from './components/add-education-dialog'
 
 const NA = 'N/A'
 
@@ -84,8 +85,18 @@ export function Profile() {
           )}
         </div>
 
-        <div className="px-8 py-6 rounded-xl border">
+        <div className="px-8 py-6 rounded-xl border mb-8">
           <h1 className="text-2xl mb-4">Experience Level</h1>
+
+          <UpdateExperienceLevel selectedExperienceLevel={profile.experienceLevel} />
+        </div>
+
+        <div className="px-8 py-6 rounded-xl border mb-8">
+          <div className="flex items-center gap-x-4 justify-between mb-4">
+            <h1 className="text-2xl mb-4">Education</h1>
+
+            <AddEducationDialog education={profile.education} />
+          </div>
 
           <UpdateExperienceLevel selectedExperienceLevel={profile.experienceLevel} />
         </div>

@@ -3,7 +3,17 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { Button, Form, FormControl, FormField, FormItem, FormLabel, Input, Textarea } from '@/components/ui'
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Textarea,
+} from '@/components/ui'
 import { cn, handleError } from '@/lib'
 import { BasicProps, Profile } from '@/types'
 import { updateProfileSchema, UpdateProfileSchema } from '@/schema'
@@ -57,6 +67,8 @@ export default function UpdateBasicProfile({ className, style, profile, onCancel
               <FormControl>
                 <Input placeholder="Occupation" disabled={updateProfileMutation.isPending} {...field} />
               </FormControl>
+
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -70,6 +82,8 @@ export default function UpdateBasicProfile({ className, style, profile, onCancel
               <FormControl>
                 <Textarea placeholder="About" rows={5} disabled={updateProfileMutation.isPending} {...field} />
               </FormControl>
+
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -83,6 +97,8 @@ export default function UpdateBasicProfile({ className, style, profile, onCancel
               <FormControl>
                 <Textarea placeholder="Full Address" rows={4} disabled={updateProfileMutation.isPending} {...field} />
               </FormControl>
+
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -96,6 +112,8 @@ export default function UpdateBasicProfile({ className, style, profile, onCancel
               <FormControl>
                 <ArrayInput addButtonLabel="Add Language" />
               </FormControl>
+
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -109,6 +127,8 @@ export default function UpdateBasicProfile({ className, style, profile, onCancel
               <FormControl>
                 <ArrayInput addButtonLabel="Add Skill" />
               </FormControl>
+
+              <FormMessage />
             </FormItem>
           )}
         />

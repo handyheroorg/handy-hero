@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { RotateCwIcon } from 'lucide-react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { Button, Form, FormControl, FormField, FormItem, FormLabel, Input } from '@/components/ui'
+import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from '@/components/ui'
 import { cn, handleError, USER_QUERY_KEY } from '@/lib'
 import { UpdateUserSchema, updateUserSchema } from '@/schema'
 import { BasicProps } from '@/types'
@@ -55,6 +55,8 @@ export default function UpdateUserForm({ className, style, onCancel }: UpdateUse
               <FormControl>
                 <Input placeholder="Full Name" disabled={updateUserMutation.isPending} {...field} />
               </FormControl>
+
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -68,6 +70,8 @@ export default function UpdateUserForm({ className, style, onCancel }: UpdateUse
               <FormControl>
                 <Input placeholder="Mobile Number" disabled={updateUserMutation.isPending} {...field} />
               </FormControl>
+
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -81,6 +85,8 @@ export default function UpdateUserForm({ className, style, onCancel }: UpdateUse
               <FormControl>
                 <Input placeholder="Country" disabled={updateUserMutation.isPending} {...field} />
               </FormControl>
+
+              <FormMessage />
             </FormItem>
           )}
         />
