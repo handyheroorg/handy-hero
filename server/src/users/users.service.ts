@@ -1,7 +1,8 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { sanitizeUser } from 'src/utils'
-import { Prisma } from '@prisma/client'
+import { Prisma, ServiceProviderProfile } from '@prisma/client'
+import { merge } from 'remeda'
 import { CreateUserDto, UpdateLocationDto, UpdateProfileDto, UpdateUserDto } from './users.dto'
 import { SanitizedUser } from './users.types'
 
@@ -60,6 +61,7 @@ export class UsersService {
       where: { id: profile.id },
       data: {
         ...dto,
+        completionPercentage: this.calculateCompletionPercentage(profile, dto),
         education: dto.education as unknown as Prisma.InputJsonValue[],
         experience: dto.experience as unknown as Prisma.InputJsonValue[],
       },
@@ -86,5 +88,23 @@ export class UsersService {
   async onboardUser(user: SanitizedUser) {
     const updatedUser = await this.prisma.user.update({ where: { id: user.id }, data: { isOnboarded: true } })
     return sanitizeUser(updatedUser)
+  }
+
+  private calculateCompletionPercentage(profile: ServiceProviderProfile, dto: UpdateProfileDto) {
+    const mergedData = merge(profile, dto)
+    const allFields = [
+      mergedData.occupation,
+      mergedData.about,
+      mergedData.fullAddress,
+      mergedData.experienceLevel,
+      mergedData.languages.length,
+      mergedData.skills.length,
+      mergedData.education.length,
+      mergedData.experience.length,
+    ]
+
+    const completedFields = allFields.filter(Boolean).length
+
+    return (completedFields / allFields.length) * 100
   }
 }

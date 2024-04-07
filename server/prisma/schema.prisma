@@ -66,6 +66,8 @@ model ServiceProviderProfile {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique @db.ObjectId
 
+  completionPercentage Float @default(0)
+
   occupation      String?
   about           String?
   fullAddress     String?

@@ -36,6 +36,7 @@ export type Profile = {
   experienceLevel: ExperienceLevel
   education: Education[]
   experience: Experience[]
+  completionPercentage: number
 }
 
 export enum ExperienceLevel {
