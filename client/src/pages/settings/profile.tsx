@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { PencilIcon } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
+import dayjs from 'dayjs'
 import { Button, Skeleton } from '@/components/ui'
 import { fetchUserProfile } from '@/queries'
 import ErrorMessage from '@/components/error-message'
@@ -11,6 +12,7 @@ import UpdateExperienceLevel from './components/update-experience-level'
 import AddEducationDialog from './components/add-education-dialog'
 
 const NA = 'N/A'
+const DATE_FORMAT = 'DD MMM, YYYY'
 
 export function Profile() {
   const [isEdit, setIsEdit] = useState(false)
@@ -98,7 +100,20 @@ export function Profile() {
             <AddEducationDialog education={profile.education} />
           </div>
 
-          <UpdateExperienceLevel selectedExperienceLevel={profile.experienceLevel} />
+          {profile.education.map((study, i) => (
+            <div key={i} className="border-l pl-4 mb-8">
+              <h1 className="text-xl font-medium">{study.school}</h1>
+              <p>
+                {study.degree} {!!study.fieldOfStudy && `(${study.fieldOfStudy})`}
+              </p>
+
+              <p className="text-sm text-muted-foreground mb-2">
+                {dayjs(study.startDate).format(DATE_FORMAT)} - {dayjs(study.endDate).format(DATE_FORMAT)}
+              </p>
+
+              <p>{study.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     ))

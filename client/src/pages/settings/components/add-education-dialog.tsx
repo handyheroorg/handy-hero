@@ -58,9 +58,7 @@ export default function AddEducationDialog({ className, style, education }: AddE
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button icon={<PlusIcon />} variant="link">
-          Add Education
-        </Button>
+        <Button icon={<PlusIcon />} variant="ghost" className="text-primary" />
       </DialogTrigger>
 
       <DialogContent className={cn('w-full max-w-screen-md', className)} style={style}>
