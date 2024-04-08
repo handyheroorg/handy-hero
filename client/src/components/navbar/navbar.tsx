@@ -34,7 +34,7 @@ export default function Navbar({ className, style }: NavbarProps) {
 
           <Link to="/settings">
             {user?.avatar ? (
-              <img className="w-8 h-8 object-cover" src={user.avatar} />
+              <img className="w-8 h-8 object-cover rounded-full" src={user.avatar.publicUrl} />
             ) : (
               <div className="font-medium flex items-center justify-center w-8 h-8 border rounded-full">
                 {user?.fullName[0]}

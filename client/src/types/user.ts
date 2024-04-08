@@ -1,5 +1,6 @@
 import { Education, Experience } from '@/schema'
 import { Timestamps } from './timestamp'
+import { File } from './file'
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -12,7 +13,7 @@ export type User = Timestamps & {
   fullName: string
   email: string
   role: Role
-  avatar?: string | null
+  avatar?: File | null
   country: string
   isOnboarded: boolean
   mobileNumber: string

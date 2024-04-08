@@ -2,7 +2,7 @@ import { apiClient } from '@/lib'
 import { UpdateProfileSchema, UpdateUserSchema } from '@/schema'
 import { Location, Profile, User } from '@/types'
 
-export async function updateUser(dto: UpdateUserSchema) {
+export async function updateUser(dto: Partial<UpdateUserSchema>) {
   const { data } = await apiClient.patch<User>('/users', dto)
   return data
 }

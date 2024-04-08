@@ -8,7 +8,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  IsUrl,
   Max,
   MaxLength,
   Min,
@@ -65,7 +64,6 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsString()
-  @IsUrl()
   avatar?: string
 }
 

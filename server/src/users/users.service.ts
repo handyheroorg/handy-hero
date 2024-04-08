@@ -5,6 +5,7 @@ import { Prisma, ServiceProviderProfile } from '@prisma/client'
 import { merge } from 'remeda'
 import { CreateUserDto, UpdateLocationDto, UpdateProfileDto, UpdateUserDto } from './users.dto'
 import { SanitizedUser } from './users.types'
+import { USER_INCLUDE_FIELDS } from './user.fields'
 
 @Injectable()
 export class UsersService {
@@ -24,7 +25,7 @@ export class UsersService {
   }
 
   async findUserById(id: string) {
-    return this.prisma.user.findFirst({ where: { id }, include: { location: true } })
+    return this.prisma.user.findFirst({ where: { id }, include: USER_INCLUDE_FIELDS })
   }
 
   async findUserByEmail(email: string) {
@@ -32,7 +33,14 @@ export class UsersService {
   }
 
   async updateUser(dto: UpdateUserDto, user: SanitizedUser) {
-    const updatedUser = await this.prisma.user.update({ where: { id: user.id }, data: dto })
+    const updatedUser = await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        ...dto,
+        avatar: dto.avatar ? { connect: { id: dto.avatar } } : undefined,
+      },
+      include: USER_INCLUDE_FIELDS,
+    })
     return sanitizeUser(updatedUser)
   }
 

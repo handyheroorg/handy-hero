@@ -4,6 +4,7 @@ import { Alert, AlertDescription, AlertTitle, Button } from '@/components/ui'
 import { useAuthenticatedUser } from '@/hooks'
 import UpdateUserForm from './components/update-user-form'
 import UpdateLocation from './components/update-location'
+import AvatarUpdate from './components/avatar-update'
 
 export function BasicSettings() {
   const [isEdit, setIsEdit] = useState(false)
@@ -21,7 +22,7 @@ export function BasicSettings() {
             }}
           />
         ) : (
-          <div className="px-8 py-6 rounded-xl border relative">
+          <div className="px-8 py-6 rounded-xl border relative flex flex-col md:flex-row gap-4">
             <Button
               icon={<PencilIcon />}
               variant="outline"
@@ -31,24 +32,28 @@ export function BasicSettings() {
               }}
             />
 
-            <div className="mb-4">
-              <p className="text-sm text-muted-foreground">Email</p>
-              <p className="font-medium">{user.email}</p>
-            </div>
+            <AvatarUpdate avatar={user.avatar} />
 
-            <div className="mb-4">
-              <p className="text-sm text-muted-foreground">Name</p>
-              <p className="font-medium">{user.fullName}</p>
-            </div>
+            <div className="flex-1">
+              <div className="mb-4">
+                <p className="text-sm text-muted-foreground">Email</p>
+                <p className="font-medium">{user.email}</p>
+              </div>
 
-            <div className="mb-4">
-              <p className="text-sm text-muted-foreground">Mobile Number</p>
-              <p className="font-medium">{user.mobileNumber}</p>
-            </div>
+              <div className="mb-4">
+                <p className="text-sm text-muted-foreground">Name</p>
+                <p className="font-medium">{user.fullName}</p>
+              </div>
 
-            <div>
-              <p className="text-sm text-muted-foreground">Country</p>
-              <p className="font-medium">{user.country}</p>
+              <div className="mb-4">
+                <p className="text-sm text-muted-foreground">Mobile Number</p>
+                <p className="font-medium">{user.mobileNumber}</p>
+              </div>
+
+              <div>
+                <p className="text-sm text-muted-foreground">Country</p>
+                <p className="font-medium">{user.country}</p>
+              </div>
             </div>
           </div>
         )}
