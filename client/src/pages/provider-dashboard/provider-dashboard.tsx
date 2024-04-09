@@ -4,6 +4,7 @@ import Container from '@/components/container'
 import VerifyCard from '@/components/verify-card'
 import { useAuthenticatedUser } from '@/hooks'
 import { Button } from '@/components/ui'
+import ServicesList from './components/services-list'
 
 export default function ProviderDashboard() {
   const { user } = useAuthenticatedUser()
@@ -20,7 +21,7 @@ export default function ProviderDashboard() {
         </Link>
       </div>
 
-      <div className="flex items-center gap-4 flex-col md:flex-row">
+      <div className="flex items-center gap-4 flex-col md:flex-row mb-4">
         <VerifyCard
           icon={<MailIcon />}
           title="Verify your email"
@@ -34,6 +35,8 @@ export default function ProviderDashboard() {
           iconClassName="text-amber-500"
         />
       </div>
+
+      <ServicesList />
     </Container>
   )
 }

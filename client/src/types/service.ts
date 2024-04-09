@@ -11,3 +11,5 @@ export type Service = Timestamps & {
   priceType: 'HOURLY' | 'FIXED'
   maxHours: number | null
 }
+
+export type PriceType = Service['priceType']

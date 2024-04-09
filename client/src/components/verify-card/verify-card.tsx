@@ -11,7 +11,7 @@ type VerifyCardProps = BasicProps & {
 
 export default function VerifyCard({ className, style, icon, iconClassName, title, description }: VerifyCardProps) {
   return (
-    <div className={cn('flex gap-x-4 border rounded-lg px-8 py-6 md:min-w-96', className)} style={style}>
+    <div className={cn('flex gap-x-4 border rounded-lg px-8 py-6 md:min-w-96 w-full', className)} style={style}>
       {cloneElement(icon, { className: cn(iconClassName, 'size-6') })}
 
       <div>
