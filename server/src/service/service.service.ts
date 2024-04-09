@@ -29,6 +29,7 @@ export class ServiceService {
       data: {
         ...dto,
         profile: { connect: { id: profile.id } },
+        thumbnail: { connect: { id: dto.thumbnail } },
       },
     })
   }
@@ -50,7 +51,10 @@ export class ServiceService {
       throw new ForbiddenException('You are not allowed to update this service!')
     }
 
-    return this.prisma.service.update({ where: { id: service.id }, data: dto })
+    return this.prisma.service.update({
+      where: { id: service.id },
+      data: { ...dto, thumbnail: { connect: { id: dto.thumbnail } } },
+    })
   }
 
   findAll(filters: FindServicesFiltersDto) {
