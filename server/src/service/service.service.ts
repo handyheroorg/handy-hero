@@ -4,6 +4,7 @@ import { SanitizedUser } from 'src/users/users.types'
 import { UsersService } from 'src/users/users.service'
 import { Prisma } from '@prisma/client'
 import { CreateServiceDto, FindServicesFiltersDto, UpdateServiceDto } from './service.dto'
+import { SERVICE_INCLUDE_FIELDS } from './service.fields'
 
 @Injectable()
 export class ServiceService {
@@ -31,11 +32,12 @@ export class ServiceService {
         profile: { connect: { id: profile.id } },
         thumbnail: { connect: { id: dto.thumbnail } },
       },
+      include: SERVICE_INCLUDE_FIELDS,
     })
   }
 
   async findById(id: string) {
-    const service = await this.prisma.service.findFirst({ where: { id } })
+    const service = await this.prisma.service.findFirst({ where: { id }, include: SERVICE_INCLUDE_FIELDS })
     if (!service) {
       throw new NotFoundException('Service not found!')
     }
@@ -54,6 +56,7 @@ export class ServiceService {
     return this.prisma.service.update({
       where: { id: service.id },
       data: { ...dto, thumbnail: { connect: { id: dto.thumbnail } } },
+      include: SERVICE_INCLUDE_FIELDS,
     })
   }
 
@@ -79,6 +82,12 @@ export class ServiceService {
       where.skills = { hasSome: filters.skills }
     }
 
-    return this.prisma.service.findMany({ where })
+    return this.prisma.service.findMany({ where, include: SERVICE_INCLUDE_FIELDS })
+  }
+
+  async findUserServices(user: SanitizedUser) {
+    const profile = await this.usersService.findProfile(user.id)
+
+    return this.prisma.service.findMany({ where: { profileId: profile.id }, include: SERVICE_INCLUDE_FIELDS })
   }
 }

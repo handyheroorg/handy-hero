@@ -26,6 +26,11 @@ export class ServiceController {
     return this.serviceService.updateService(id, dto, user)
   }
 
+  @Get('my-services')
+  findUserServices(@User() user: SanitizedUser) {
+    return this.serviceService.findUserServices(user)
+  }
+
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.serviceService.findById(id)
