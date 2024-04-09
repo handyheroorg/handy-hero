@@ -3,11 +3,11 @@ import {
   ArrayMinSize,
   IsArray,
   IsEnum,
+  IsMongoId,
   IsNumber,
   IsOptional,
   IsPositive,
   IsString,
-  IsUrl,
   Max,
   MaxLength,
   Min,
@@ -29,9 +29,8 @@ export class CreateServiceDto {
   @MaxLength(5000)
   description?: string
 
-  @IsOptional()
   @IsString()
-  @IsUrl()
+  @IsMongoId()
   thumbnail?: string
 
   @IsArray()

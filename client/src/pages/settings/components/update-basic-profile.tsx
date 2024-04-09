@@ -18,7 +18,7 @@ import { cn, handleError } from '@/lib'
 import { BasicProps, Profile } from '@/types'
 import { updateProfileSchema, UpdateProfileSchema } from '@/schema'
 import { updateProfile } from '@/queries'
-import ArrayInput from './array-input'
+import ArrayInput from '@/components/array-input'
 
 type UpdateBasicProfileProps = BasicProps & {
   profile: Profile

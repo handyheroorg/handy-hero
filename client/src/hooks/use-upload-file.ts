@@ -21,6 +21,7 @@ export function useUploadFile({ onSuccess }: UseUploadFileProps) {
   return {
     isUploading: uploadFileMutation.isPending,
     upload: uploadFileMutation.mutate,
+    uploadedFile: uploadFileMutation.data,
     error: uploadFileMutation.error,
   }
 }

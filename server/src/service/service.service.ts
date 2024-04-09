@@ -12,7 +12,7 @@ export class ServiceService {
   async createService(dto: CreateServiceDto, user: SanitizedUser) {
     const profile = await this.usersService.findProfile(user.id)
 
-    if (profile.completionPercentage >= 60) {
+    if (profile.completionPercentage < 60) {
       throw new BadRequestException('Your profile must be at least 60% completed!')
     }
 

@@ -5,6 +5,7 @@ import {
   IsDateString,
   IsEmail,
   IsEnum,
+  IsMongoId,
   IsNumber,
   IsOptional,
   IsString,
@@ -63,6 +64,7 @@ export class UpdateUserDto {
   country?: string
 
   @IsOptional()
+  @IsMongoId()
   @IsString()
   avatar?: string
 }
