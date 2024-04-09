@@ -9,6 +9,7 @@ import Settings, { BasicSettings, Profile } from '@/pages/settings'
 import { roleGuard } from './guard'
 import { Role } from '@/types'
 import CreateService from '@/pages/create-service'
+import ProviderDashboard from '@/pages/provider-dashboard'
 
 export const router = createBrowserRouter([
   /** Authenticated App */
@@ -39,6 +40,11 @@ export const router = createBrowserRouter([
             loader: () => roleGuard([Role.SERVICE_PROVIDER]),
           },
         ],
+      },
+      {
+        path: 'provider/dashboard',
+        element: <ProviderDashboard />,
+        loader: () => roleGuard([Role.SERVICE_PROVIDER]),
       },
       {
         path: '/services/create',
