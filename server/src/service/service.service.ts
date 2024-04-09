@@ -90,4 +90,15 @@ export class ServiceService {
 
     return this.prisma.service.findMany({ where: { profileId: profile.id }, include: SERVICE_INCLUDE_FIELDS })
   }
+
+  async deleteService(id: string, user: SanitizedUser) {
+    const service = await this.findById(id)
+    const profile = await this.usersService.findProfile(user.id)
+
+    if (service.profileId !== profile.id) {
+      throw new ForbiddenException('You are not allowed to delete this resource!')
+    }
+
+    return this.prisma.service.delete({ where: { id: service.id }, include: SERVICE_INCLUDE_FIELDS })
+  }
 }

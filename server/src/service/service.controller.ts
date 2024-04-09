@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { User } from 'src/users/users.decorator'
 import { SanitizedUser } from 'src/users/users.types'
@@ -24,6 +24,13 @@ export class ServiceController {
   @Role('SERVICE_PROVIDER')
   updateService(@Param('id') id: string, @Body() dto: UpdateServiceDto, @User() user: SanitizedUser) {
     return this.serviceService.updateService(id, dto, user)
+  }
+
+  @Delete(':id')
+  @UseGuards(RoleGuard)
+  @Role('SERVICE_PROVIDER')
+  deleteService(@Param('id') id: string, @User() user: SanitizedUser) {
+    return this.serviceService.deleteService(id, user)
   }
 
   @Get('my-services')
