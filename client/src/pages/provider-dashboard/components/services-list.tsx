@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
 import { Link } from 'react-router-dom'
-import { EyeIcon, PencilIcon, TrashIcon } from 'lucide-react'
+import { EyeIcon, PencilIcon } from 'lucide-react'
 import { BasicProps, PriceType } from '@/types'
 import { fetchUserServices } from '@/queries'
 import { Button, Skeleton } from '@/components/ui'
 import ErrorMessage from '@/components/error-message'
 import { cn, getErrorMessage } from '@/lib'
+import DeleteService from './delete-service'
 
 type ServicesListProps = BasicProps
 
@@ -59,7 +60,7 @@ export default function ServicesList({ className, style }: ServicesListProps) {
                     </Button>
                   </Link>
 
-                  <Button icon={<TrashIcon />} variant="destructive" />
+                  <DeleteService id={service.id} />
                 </div>
               </div>
             </div>

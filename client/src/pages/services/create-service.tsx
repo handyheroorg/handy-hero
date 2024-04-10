@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { BadgePlusIcon } from 'lucide-react'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 import Container from '@/components/container'
 import { CreateServiceSchema, createServiceSchema } from '@/schema'
 import {
@@ -28,6 +29,7 @@ import ArrayInput from '@/components/array-input'
 import { createService } from '@/queries'
 
 export function CreateService() {
+  const navigate = useNavigate()
   const form = useForm<CreateServiceSchema>({
     resolver: zodResolver(createServiceSchema),
     defaultValues: {
@@ -46,6 +48,7 @@ export function CreateService() {
     onSuccess: () => {
       form.reset()
       toast.success('Service created successfully!')
+      navigate('/provider/dashboard')
     },
   })
 

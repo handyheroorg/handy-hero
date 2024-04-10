@@ -11,3 +11,8 @@ export async function fetchUserServices() {
   const { data } = await apiClient.get<Service[]>('/services/my-services')
   return data
 }
+
+export async function deleteService(id: string) {
+  const { data } = await apiClient.delete<Service>(`/services/${id}`)
+  return data
+}
