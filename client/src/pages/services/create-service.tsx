@@ -27,7 +27,7 @@ import { handleError, VALID_IMAGE_MIME_TYPES } from '@/lib'
 import ArrayInput from '@/components/array-input'
 import { createService } from '@/queries'
 
-export default function CreateService() {
+export function CreateService() {
   const form = useForm<CreateServiceSchema>({
     resolver: zodResolver(createServiceSchema),
     defaultValues: {

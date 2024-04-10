@@ -14,7 +14,7 @@ export default function ProviderDashboard() {
       <h1 className="text-2xl font-bold mb-4">{user.fullName.split(' ')[0]}&apos;s Workspace</h1>
 
       <div className="flex items-center justify-end">
-        <Link to="/services/create">
+        <Link to="/services/new">
           <Button icon={<PlusIcon />} className="mb-4">
             Add Service
           </Button>
@@ -24,14 +24,14 @@ export default function ProviderDashboard() {
       <div className="flex items-center gap-4 flex-col md:flex-row mb-4">
         <VerifyCard
           icon={<MailIcon />}
-          title="Verify your email"
-          description="baad mai likhunga"
+          title="Verify Your Email Address"
+          description="Please verify your email address to activate your account and access all features."
           iconClassName="text-teal-500"
         />
         <VerifyCard
           icon={<PhoneIcon />}
-          title="Verify your phone"
-          description="baad mai likhunga"
+          title="Verify Your Phone Number"
+          description="Please verify your phone number to secure your account and enable additional features."
           iconClassName="text-amber-500"
         />
       </div>

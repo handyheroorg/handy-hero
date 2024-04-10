@@ -23,7 +23,7 @@ export default function Welcome() {
             : 'Connect with skilled professionals in your community to meet your business needs effortlessly.'}
         </p>
 
-        <Link to={user.role === Role.SERVICE_PROVIDER ? '/services/create' : '/services'}>
+        <Link to={user.role === Role.SERVICE_PROVIDER ? '/services/new' : '/services'}>
           <Button className="rounded-full">
             {user.role === Role.SERVICE_PROVIDER ? 'Create Service Now' : 'Find Talent Now'}
           </Button>
