@@ -1,5 +1,5 @@
 import { apiClient } from '@/lib'
-import { CreateServiceSchema } from '@/schema'
+import { CreateServiceSchema, UpdateServiceSchema } from '@/schema'
 import { Service } from '@/types'
 
 export async function createService(dto: CreateServiceSchema) {
@@ -14,5 +14,15 @@ export async function fetchUserServices() {
 
 export async function deleteService(id: string) {
   const { data } = await apiClient.delete<Service>(`/services/${id}`)
+  return data
+}
+
+export async function fetchService(id: string) {
+  const { data } = await apiClient.get<Service>(`/services/${id}`)
+  return data
+}
+
+export async function updateService(id: string, dto: UpdateServiceSchema) {
+  const { data } = await apiClient.patch(`/services/${id}`, dto)
   return data
 }
