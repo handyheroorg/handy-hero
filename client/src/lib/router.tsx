@@ -9,7 +9,7 @@ import Settings, { BasicSettings, Profile } from '@/pages/settings'
 import { roleGuard } from './guard'
 import { Role } from '@/types'
 import ProviderDashboard from '@/pages/provider-dashboard'
-import { CreateService, EditService } from '@/pages/services'
+import { CreateService, EditService, ServiceDetails } from '@/pages/services'
 
 export const router = createBrowserRouter([
   /** Authenticated App */
@@ -57,6 +57,10 @@ export const router = createBrowserRouter([
           {
             path: '/services/:id/edit',
             element: <EditService />,
+          },
+          {
+            path: '/services/:id',
+            element: <ServiceDetails />,
           },
         ],
       },
