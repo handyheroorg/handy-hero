@@ -4,15 +4,13 @@ import { NotificationBell, PopoverNotificationCenter } from '@novu/notification-
 import { cn } from '@/lib'
 import { BasicProps } from '@/types'
 import Container from '../container'
-import { useAuthContext } from '@/hooks'
+import UserDropdown from './components/user-dropdown'
 
 type NavbarProps = BasicProps
 
 const NAVBAR_HEIGHT = 64
 
 export default function Navbar({ className, style }: NavbarProps) {
-  const { user } = useAuthContext()
-
   return (
     <nav
       className={cn('fixed top-0 left-0 w-full  bg-white/50 backdrop-blur-lg border-b z-50', className)}
@@ -32,15 +30,7 @@ export default function Navbar({ className, style }: NavbarProps) {
             {({ unseenCount }) => <NotificationBell unseenCount={unseenCount} />}
           </PopoverNotificationCenter>
 
-          <Link to="/settings">
-            {user?.avatar ? (
-              <img className="w-8 h-8 object-cover rounded-full" src={user.avatar.publicUrl} />
-            ) : (
-              <div className="font-medium flex items-center justify-center w-8 h-8 border rounded-full">
-                {user?.fullName[0]}
-              </div>
-            )}
-          </Link>
+          <UserDropdown />
         </div>
       </Container>
     </nav>

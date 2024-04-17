@@ -8,6 +8,10 @@ function setStoredAccessToken(accessToken: string) {
   return localStorage.setItem(AUTH_TOKEN_KEY, accessToken)
 }
 
+function removeStoredAccessToken() {
+  localStorage.removeItem(AUTH_TOKEN_KEY)
+}
+
 function useAuth() {
   const {
     isLoading: isAuthInProgress,
@@ -47,11 +51,21 @@ function useAuth() {
     },
   })
 
+  function logout() {
+    /** Removing user's access token */
+    removeStoredAccessToken()
+
+    window.location.href = '/auth/login'
+
+    toast.success('Logout success!')
+  }
+
   return {
     isAuthInProgress,
     user,
     signupMutation,
     loginMutation,
+    logout,
   }
 }
 
