@@ -5,6 +5,7 @@ import { findAllSkills } from '@/queries'
 
 type SkillsSelectorProps = BasicProps & {
   defaultValue?: string[]
+  value?: string[]
   onChange: (skills: string[]) => void
 }
 
@@ -13,7 +14,7 @@ type Option = {
   value: string
 }
 
-export default function SkillsSelector({ className, defaultValue, onChange }: SkillsSelectorProps) {
+export default function SkillsSelector({ className, value, defaultValue, onChange }: SkillsSelectorProps) {
   const skillsQuery = useQuery({
     queryKey: ['skills'],
     queryFn: findAllSkills,
@@ -26,6 +27,7 @@ export default function SkillsSelector({ className, defaultValue, onChange }: Sk
       defaultValue={defaultValue?.map((value) => ({ label: value, value }))}
       isMulti
       isClearable
+      value={value?.map((value) => ({ label: value, value }))}
       isLoading={skillsQuery.isPending}
       options={skillsQuery.data?.map((skill) => ({ label: skill, value: skill }))}
       onChange={(value) => {

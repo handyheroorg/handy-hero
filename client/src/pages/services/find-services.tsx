@@ -1,8 +1,9 @@
-import { SearchIcon } from 'lucide-react'
+import { SearchIcon, XIcon } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
 import dayjs from 'dayjs'
 import { Link, useSearchParams } from 'react-router-dom'
+import { omit } from 'remeda'
 import Container from '@/components/container'
 import { findServices } from '@/queries'
 import Loading from '@/components/loading'
@@ -11,7 +12,7 @@ import { formatEnum, getErrorMessage } from '@/lib'
 import { FindServicesFiltersDto, PriceType } from '@/types'
 import EmptyMessage from '@/components/empty-message'
 import SkillsSelector from '@/components/skills-selector'
-import { Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components/ui'
+import { Button, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components/ui'
 
 export function FindServices() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -19,10 +20,12 @@ export function FindServices() {
   const filters = {
     query: searchParams.get('query'),
     skills: searchParams.getAll('skills'),
-    priceType: searchParams.get('priceType') as PriceType,
+    priceType: (searchParams.get('priceType') ?? undefined) as PriceType,
     minPrice: searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : null,
     maxPrice: searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : null,
   } satisfies FindServicesFiltersDto
+
+  const isFilterApplied = [...Object.values(omit(filters, ['skills'])), filters.skills?.length].some(Boolean)
 
   const servicesQuery = useQuery({
     queryKey: ['find-services', filters],
@@ -102,10 +105,24 @@ export function FindServices() {
       <div>
         <div className="w-full rounded-lg bg-muted-foreground/10 h-56 mb-4" />
 
-        <h2 className="text-lg font-medium mb-4">Filters</h2>
+        <div className="mb-4 flex items-center gap-2 justify-between">
+          <h2 className="text-lg font-medium">Filters</h2>
+
+          {isFilterApplied && (
+            <Button
+              icon={<XIcon />}
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                setSearchParams({})
+              }}
+            />
+          )}
+        </div>
 
         <SkillsSelector
           className="mb-4"
+          value={filters.skills}
           onChange={(skills) => {
             setSearchParams((prev) => {
               if (skills.length === 0) {
@@ -117,11 +134,11 @@ export function FindServices() {
               return prev
             })
           }}
-          defaultValue={filters.skills}
         />
 
         <div className="mb-4">
           <Select
+            defaultValue={filters.priceType}
             onValueChange={(priceType) => {
               setSearchParams((prev) => {
                 prev.set('priceType', priceType)
@@ -143,6 +160,7 @@ export function FindServices() {
         <div className="mb-4">
           <Label className="mb-4 block">Min Price {filters.minPrice && `($${filters.minPrice})`}</Label>
           <Slider
+            value={[filters.minPrice ?? 0]}
             min={0}
             step={5}
             max={1000}
@@ -158,6 +176,7 @@ export function FindServices() {
         <div className="mb-4">
           <Label className="mb-4 block">Max Price {filters.maxPrice && `($${filters.maxPrice})`}</Label>
           <Slider
+            value={[filters.maxPrice ?? 0]}
             min={Number(filters.minPrice)}
             max={Number(filters.minPrice) + 1000}
             onValueChange={(value) => {
