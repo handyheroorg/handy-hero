@@ -44,8 +44,8 @@ export class ServiceController {
   }
 
   @Get(':id')
-  findById(@Param('id') id: string) {
-    return this.serviceService.findById(id)
+  findById(@Param('id') id: string, @User() user: SanitizedUser) {
+    return this.serviceService.findById(id, user)
   }
 
   @Get()

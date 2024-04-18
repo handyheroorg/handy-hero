@@ -18,7 +18,7 @@ export async function deleteService(id: string) {
 }
 
 export async function fetchService(id: string) {
-  const { data } = await apiClient.get<Service>(`/services/${id}`)
+  const { data } = await apiClient.get<Service & { isChatRequestExists: boolean }>(`/services/${id}`)
   return data
 }
 

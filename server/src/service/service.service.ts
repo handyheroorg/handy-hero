@@ -37,18 +37,24 @@ export class ServiceService {
     })
   }
 
-  async findById(id: string) {
+  async findById(id: string, user: SanitizedUser) {
     const service = await this.prisma.service.findFirst({ where: { id }, include: SERVICE_INCLUDE_FIELDS })
     if (!service) {
       throw new NotFoundException('Service not found!')
     }
 
-    return service
+    return {
+      ...service,
+      isChatRequestExists: await this.isChatRequestExists({
+        serviceId: service.id,
+        userId: user.id,
+      }),
+    }
   }
 
   async updateService(id: string, dto: UpdateServiceDto, user: SanitizedUser) {
     const profile = await this.usersService.findProfile(user.id)
-    const service = await this.findById(id)
+    const service = await this.findById(id, user)
 
     if (service.profileId !== profile.id) {
       throw new ForbiddenException('You are not allowed to update this service!')
@@ -93,7 +99,7 @@ export class ServiceService {
   }
 
   async deleteService(id: string, user: SanitizedUser) {
-    const service = await this.findById(id)
+    const service = await this.findById(id, user)
     const profile = await this.usersService.findProfile(user.id)
 
     if (service.profileId !== profile.id) {
@@ -106,5 +112,13 @@ export class ServiceService {
   async findAllSkills() {
     const services = await this.prisma.service.findMany()
     return unique(services.flatMap((service) => service.skills))
+  }
+
+  async isChatRequestExists(params: { serviceId: string; userId: string }) {
+    const chatRequest = await this.prisma.chatRequest.count({
+      where: { serviceId: params.serviceId, OR: [{ serviceProviderId: params.userId }, { clientId: params.userId }] },
+    })
+
+    return chatRequest !== 0
   }
 }

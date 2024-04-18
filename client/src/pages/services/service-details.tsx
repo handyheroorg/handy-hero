@@ -8,6 +8,7 @@ import Loading from '@/components/loading'
 import ErrorMessage from '@/components/error-message'
 import { formatEnum, getErrorMessage } from '@/lib'
 import Container from '@/components/container'
+import CreateChatRequestButton from './components/create-chat-request-button'
 dayjs.extend(relativeTime)
 
 export function ServiceDetails() {
@@ -38,8 +39,8 @@ export function ServiceDetails() {
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold mb-2">{data.name}</h1>
-              <p className="text-sm text-muted-foreground">Posted {dayjs(data.createdAt).fromNow()}</p>
+              <p className="text-xs text-muted-foreground">Posted {dayjs(data.createdAt).fromNow()}</p>
+              <h1 className="text-2xl font-bold">{data.name}</h1>
             </div>
           </div>
 
@@ -62,12 +63,14 @@ export function ServiceDetails() {
         </div>
         <div className="px-8">
           <div className="mb-8">
-            <h2 className="text-xl font-medium mb-2">Pricing</h2>
+            <h2 className="text-lg font-medium">Pricing</h2>
 
             <p className="text-sm">
               {formatEnum(data.priceType)} ${data.price}
             </p>
           </div>
+
+          <CreateChatRequestButton serviceId={data.id} isChatRequestExists={data.isChatRequestExists} />
         </div>
       </Container>
     ))

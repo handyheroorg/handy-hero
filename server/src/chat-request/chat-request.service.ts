@@ -22,8 +22,20 @@ export class ChatRequestService {
   ) {}
 
   async createChatRequest(dto: CreateChatRequestDto, user: SanitizedUser) {
-    const service = await this.serviceService.findById(dto.serviceId)
+    const service = await this.serviceService.findById(dto.serviceId, user)
     const serviceProvider = await this.userService.findUserForProfile(service.profileId)
+
+    const chatRequest = await this.prisma.chatRequest.findFirst({
+      where: {
+        clientId: user.id,
+        serviceProviderId: serviceProvider.id,
+        serviceId: service.id,
+      },
+    })
+
+    if (chatRequest) {
+      throw new BadRequestException('Chat request for this service is already created!')
+    }
 
     await this.notificationService.sendNotification(serviceProvider.id, {
       body: `${user.fullName} has sent you a chat request!`,

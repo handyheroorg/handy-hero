@@ -1,0 +1,54 @@
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import { Button } from '@/components/ui'
+import { useAuthenticatedUser } from '@/hooks'
+import { BasicProps, Role } from '@/types'
+import { createChatRequest } from '@/queries'
+import { cn, handleError } from '@/lib'
+
+type CreateChatRequestButtonProps = BasicProps & {
+  serviceId: string
+  isChatRequestExists: boolean
+}
+
+export default function CreateChatRequestButton({
+  className,
+  style,
+  serviceId,
+  isChatRequestExists,
+}: CreateChatRequestButtonProps) {
+  const { user } = useAuthenticatedUser()
+
+  const createChatRequestMutation = useMutation({
+    mutationFn: createChatRequest,
+    onError: handleError,
+    onSuccess: () => {
+      toast.success('Chat request created successfully!')
+    },
+  })
+
+  if (user.role !== Role.CLIENT) {
+    return null
+  }
+
+  if (isChatRequestExists) {
+    return (
+      <div className="text-center text-sm py-10 rounded-md bg-primary/10 px-4 text-primary">
+        You have sent a chat request for this service
+      </div>
+    )
+  }
+
+  return (
+    <Button
+      className={cn('w-full', className)}
+      style={style}
+      loading={createChatRequestMutation.isPending}
+      onClick={() => {
+        createChatRequestMutation.mutate(serviceId)
+      }}
+    >
+      Create Chat Request
+    </Button>
+  )
+}

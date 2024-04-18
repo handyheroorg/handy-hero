@@ -25,7 +25,7 @@ export class FeedbackService {
   }
 
   async createFeedback(dto: CreateFeedbackDto, user: SanitizedUser) {
-    const service = await this.serviceService.findById(dto.serviceId)
+    const service = await this.serviceService.findById(dto.serviceId, user)
     const serviceProvider = await this.userService.findUserForProfile(service.profileId)
 
     const feedback = await this.findByClientAndService(user.id, dto.serviceId)
