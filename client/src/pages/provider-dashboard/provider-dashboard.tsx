@@ -5,6 +5,7 @@ import VerifyCard from '@/components/verify-card'
 import { useAuthenticatedUser } from '@/hooks'
 import { Button } from '@/components/ui'
 import ServicesList from './components/services-list'
+import Stats from './components/stats'
 
 export default function ProviderDashboard() {
   const { user } = useAuthenticatedUser()
@@ -13,13 +14,13 @@ export default function ProviderDashboard() {
     <Container className="!py-8">
       <h1 className="text-2xl font-bold mb-4">{user.fullName.split(' ')[0]}&apos;s Workspace</h1>
 
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end mb-4">
         <Link to="/services/new">
-          <Button icon={<PlusIcon />} className="mb-4">
-            Add Service
-          </Button>
+          <Button icon={<PlusIcon />}>Add Service</Button>
         </Link>
       </div>
+
+      <Stats className="mb-4" />
 
       <div className="flex items-center gap-4 flex-col md:flex-row mb-4">
         <VerifyCard
