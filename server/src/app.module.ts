@@ -15,6 +15,7 @@ import { ChatRoomModule } from './chat-room/chat-room.module'
 import { ContractProposalModule } from './contract-proposal/contract-proposal.module'
 import { ContractModule } from './contract/contract.module'
 import { FilesModule } from './files/files.module'
+import { DashboardModule } from './dashboard/dashboard.module'
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { FilesModule } from './files/files.module'
     ContractProposalModule,
     ContractModule,
     FilesModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
