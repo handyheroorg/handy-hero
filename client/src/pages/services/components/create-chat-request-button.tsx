@@ -48,7 +48,7 @@ export default function CreateChatRequestButton({
         createChatRequestMutation.mutate(serviceId)
       }}
     >
-      Create Chat Request
+      Send Chat Request
     </Button>
   )
 }
