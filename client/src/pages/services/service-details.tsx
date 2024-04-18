@@ -6,7 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { fetchService } from '@/queries'
 import Loading from '@/components/loading'
 import ErrorMessage from '@/components/error-message'
-import { getErrorMessage } from '@/lib'
+import { formatEnum, getErrorMessage } from '@/lib'
 import Container from '@/components/container'
 dayjs.extend(relativeTime)
 
@@ -64,8 +64,8 @@ export function ServiceDetails() {
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-2">Pricing</h2>
 
-            <p>
-              ${data.price} {data.priceType === 'HOURLY' ? 'hourly' : 'fixed'}
+            <p className="text-sm">
+              {formatEnum(data.priceType)} ${data.price}
             </p>
           </div>
         </div>

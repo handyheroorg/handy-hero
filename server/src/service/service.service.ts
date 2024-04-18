@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { UsersService } from 'src/users/users.service'
 import { Prisma } from '@prisma/client'
+import { unique } from 'remeda'
 import { CreateServiceDto, FindServicesFiltersDto, UpdateServiceDto } from './service.dto'
 import { SERVICE_INCLUDE_FIELDS } from './service.fields'
 
@@ -78,7 +79,7 @@ export class ServiceService {
       where.priceType = filters.priceType
     }
 
-    if (filters.skills.length) {
+    if (filters.skills?.length) {
       where.skills = { hasSome: filters.skills }
     }
 
@@ -100,5 +101,10 @@ export class ServiceService {
     }
 
     return this.prisma.service.delete({ where: { id: service.id }, include: SERVICE_INCLUDE_FIELDS })
+  }
+
+  async findAllSkills() {
+    const services = await this.prisma.service.findMany()
+    return unique(services.flatMap((service) => service.skills))
   }
 }

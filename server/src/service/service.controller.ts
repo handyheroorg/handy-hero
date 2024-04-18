@@ -38,6 +38,11 @@ export class ServiceController {
     return this.serviceService.findUserServices(user)
   }
 
+  @Get('skills')
+  findAllSkills() {
+    return this.serviceService.findAllSkills()
+  }
+
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.serviceService.findById(id)

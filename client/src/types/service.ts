@@ -13,3 +13,11 @@ export type Service = Timestamps & {
 }
 
 export type PriceType = Service['priceType']
+
+export type FindServicesFiltersDto = {
+  query: string | null
+  skills: string[] | null
+  minPrice: number | null
+  maxPrice: number | null
+  priceType: PriceType | null
+}

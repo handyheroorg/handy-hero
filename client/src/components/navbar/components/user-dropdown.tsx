@@ -21,7 +21,7 @@ export default function UserDropdown({ className, style }: UserDropdownProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild className="cursor-pointer">
         {user?.avatar ? (
           <img className="w-8 h-8 object-cover rounded-full" src={user.avatar.publicUrl} />
         ) : (

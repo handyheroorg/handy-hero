@@ -1,6 +1,6 @@
 import { apiClient } from '@/lib'
 import { CreateServiceSchema, UpdateServiceSchema } from '@/schema'
-import { Service } from '@/types'
+import { FindServicesFiltersDto, Service } from '@/types'
 
 export async function createService(dto: CreateServiceSchema) {
   const { data } = await apiClient.post<Service>('/services', dto)
@@ -24,5 +24,15 @@ export async function fetchService(id: string) {
 
 export async function updateService(id: string, dto: UpdateServiceSchema) {
   const { data } = await apiClient.patch(`/services/${id}`, dto)
+  return data
+}
+
+export async function findServices(params: Partial<FindServicesFiltersDto>) {
+  const { data } = await apiClient.get<Service[]>('/services', { params })
+  return data
+}
+
+export async function findAllSkills() {
+  const { data } = await apiClient.get<string[]>('/services/skills')
   return data
 }

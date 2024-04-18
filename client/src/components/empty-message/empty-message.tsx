@@ -7,7 +7,7 @@ type EmptyMessageProps = BasicProps & {
   description?: string
 }
 
-export function EmptyMessage({
+export default function EmptyMessage({
   title = 'No items found',
   description = 'Create create a new item to get started',
   className,
