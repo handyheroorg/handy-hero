@@ -19,8 +19,6 @@ export class ChatRequestController {
     return this.chatRequestService.createChatRequest(dto, user)
   }
 
-  @UseGuards(RoleGuard)
-  @Role('CLIENT')
   @Get()
   findAll(@User() user: SanitizedUser) {
     return this.chatRequestService.findAll(user)

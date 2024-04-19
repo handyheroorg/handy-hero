@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
 import { CheckIcon, CircleDashedIcon, ClockIcon, XIcon } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { BasicProps } from '@/types'
 import { fetchDashboardStats } from '@/queries/dashboard'
 import ErrorMessage from '@/components/error-message'
@@ -12,6 +13,8 @@ import { Skeleton } from '@/components/ui'
 type StatsProps = BasicProps
 
 export default function Stats({ className, style }: StatsProps) {
+  const navigate = useNavigate()
+
   const statsQuery = useQuery({
     queryKey: ['dashboard'],
     queryFn: fetchDashboardStats,
@@ -34,6 +37,9 @@ export default function Stats({ className, style }: StatsProps) {
           value={data.pendingChatRequests}
           icon={<CircleDashedIcon />}
           iconClassName="text-yellow-500"
+          onClick={() => {
+            navigate('/chat/requests')
+          }}
         />
         <StatCard
           className="flex-1"

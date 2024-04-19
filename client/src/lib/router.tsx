@@ -10,6 +10,7 @@ import { roleGuard } from './guard'
 import { Role } from '@/types'
 import ProviderDashboard from '@/pages/provider-dashboard'
 import { CreateService, EditService, FindServices, ServiceDetails } from '@/pages/services'
+import { ChatRequests } from '@/pages/chat'
 
 export const router = createBrowserRouter([
   /** Authenticated App */
@@ -68,6 +69,16 @@ export const router = createBrowserRouter([
             path: '/services/find',
             element: <FindServices />,
             loader: () => roleGuard([Role.CLIENT]),
+          },
+        ],
+      },
+      {
+        path: 'chat',
+        children: [
+          {
+            path: '/chat/requests',
+            element: <ChatRequests />,
+            loader: () => roleGuard([Role.SERVICE_PROVIDER, Role.CLIENT]),
           },
         ],
       },

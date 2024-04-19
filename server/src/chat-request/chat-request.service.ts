@@ -51,7 +51,10 @@ export class ChatRequestService {
   }
 
   async findAll(user: SanitizedUser) {
-    return this.prisma.chatRequest.findMany({ where: { clientId: user.id }, include: CHAT_REQUEST_INCLUDE_FIELDS })
+    return this.prisma.chatRequest.findMany({
+      where: { OR: [{ clientId: user.id }, { serviceProviderId: user.id }] },
+      include: CHAT_REQUEST_INCLUDE_FIELDS,
+    })
   }
 
   async findById(id: string) {
@@ -73,7 +76,13 @@ export class ChatRequestService {
   }
 
   async processChatRequest(id: string, dto: ProcessChatRequestDto, user: SanitizedUser) {
-    const chatRequest = await this.findById(id)
+    const chatRequest = await this.prisma.chatRequest.findFirst({
+      where: { id },
+      include: { client: true, service: true },
+    })
+    if (!chatRequest) {
+      throw new NotFoundException('Chat request not found!')
+    }
     if (chatRequest.serviceProviderId !== user.id) {
       throw new ForbiddenException('You are not allowed to process this chat request!')
     }
