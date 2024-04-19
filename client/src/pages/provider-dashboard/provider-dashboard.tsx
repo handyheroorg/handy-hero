@@ -6,6 +6,7 @@ import { useAuthenticatedUser } from '@/hooks'
 import { Button } from '@/components/ui'
 import ServicesList from './components/services-list'
 import Stats from './components/stats'
+import ChatRooms from '@/components/chat-rooms'
 
 export default function ProviderDashboard() {
   const { user } = useAuthenticatedUser()
@@ -37,7 +38,10 @@ export default function ProviderDashboard() {
         />
       </div>
 
-      <ServicesList />
+      <div className="flex gap-4">
+        <ServicesList className="flex-[2]" />
+        <ChatRooms className="flex-1" />
+      </div>
     </Container>
   )
 }

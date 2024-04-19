@@ -30,8 +30,8 @@ export class ChatRoomService {
       },
       include: {
         service: { select: { id: true, name: true } },
-        client: { select: { id: true, fullName: true } },
-        provider: { select: { id: true, fullName: true } },
+        client: { select: { id: true, fullName: true, avatar: true } },
+        provider: { select: { id: true, fullName: true, avatar: true } },
       },
     })
   }
