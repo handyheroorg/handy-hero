@@ -13,7 +13,7 @@ export class DashboardService {
       }
 
       case 'CLIENT': {
-        return this.getClientDashboardStats()
+        return this.getClientDashboardStats(user)
       }
 
       case 'SERVICE_PROVIDER': {
@@ -26,8 +26,20 @@ export class DashboardService {
     }
   }
 
-  async getClientDashboardStats() {
-    return {}
+  async getClientDashboardStats(user: SanitizedUser) {
+    const [sentChatRequests, acceptedChatRequest, rejectedChatRequests, onGoingContracts] = await Promise.all([
+      this.prisma.chatRequest.count({ where: { clientId: user.id, status: 'PENDING' } }),
+      this.prisma.chatRequest.count({ where: { clientId: user.id, status: 'ACCEPTED' } }),
+      this.prisma.chatRequest.count({ where: { clientId: user.id, status: 'REJECTED' } }),
+      this.prisma.contract.count({ where: { clientId: user.id, status: 'ON_GOING' } }),
+    ])
+
+    return {
+      sentChatRequests,
+      acceptedChatRequest,
+      rejectedChatRequests,
+      onGoingContracts,
+    }
   }
 
   async getProviderDashboardStats(user: SanitizedUser) {
