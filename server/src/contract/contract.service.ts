@@ -35,6 +35,7 @@ export class ContractService {
   findAll(user: SanitizedUser) {
     return this.prisma.contract.findMany({
       where: {
+        status: 'ON_GOING',
         OR: [{ serviceProviderId: user.id }, { clientId: user.id }],
       },
       include: {
@@ -43,10 +44,6 @@ export class ContractService {
             id: true,
             name: true,
             description: true,
-            price: true,
-            priceType: true,
-            skills: true,
-            thumbnail: true,
           },
         },
         client: {

@@ -1,6 +1,6 @@
 import { apiClient } from '@/lib'
 import { CreateContractProposalSchema, ProcessContractProposalDto } from '@/schema'
-import { ContractProposal } from '@/types'
+import { Contract, ContractProposal } from '@/types'
 
 /**
  * Contract Proposal
@@ -17,5 +17,13 @@ export async function processContractProposal(chatRoomId: string, dto: ProcessCo
 
 export async function fetchContractProposal(chatRoomId: string) {
   const { data } = await apiClient.get<ContractProposal>(`/contract-proposal/${chatRoomId}`)
+  return data
+}
+
+/**
+ * Contracts
+ */
+export async function fetchContracts() {
+  const { data } = await apiClient.get<Contract[]>('/contracts')
   return data
 }

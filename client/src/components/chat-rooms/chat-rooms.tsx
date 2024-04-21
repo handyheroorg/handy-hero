@@ -33,9 +33,7 @@ export default function ChatRooms({ className, style }: ChatRoomsProps) {
     ))
     .with({ status: 'success' }, ({ data }) => {
       if (data.length === 0) {
-        return (
-          <EmptyMessage description="You don't have any chat rooms yet. Post more jobs to receive chat requests." />
-        )
+        return <EmptyMessage description="You don't have any chat rooms yet." />
       }
 
       return (

@@ -6,6 +6,7 @@ import { useAuthenticatedUser } from '@/hooks'
 import VerifyCard from '@/components/verify-card'
 import ChatRooms from '@/components/chat-rooms'
 import Stats from './components/stats'
+import ContractsList from '@/components/contracts-list'
 
 export default function ClientDashboard() {
   const { user } = useAuthenticatedUser()
@@ -38,6 +39,7 @@ export default function ClientDashboard() {
       </div>
 
       <div className="flex gap-4">
+        <ContractsList className="flex-[2]" />
         <ChatRooms className="flex-1" />
       </div>
     </Container>
