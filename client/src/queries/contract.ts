@@ -27,3 +27,8 @@ export async function fetchContracts() {
   const { data } = await apiClient.get<Contract[]>('/contracts')
   return data
 }
+
+export async function fetchContract(id: string) {
+  const { data } = await apiClient.get<Contract>(`/contracts/${id}`)
+  return data
+}

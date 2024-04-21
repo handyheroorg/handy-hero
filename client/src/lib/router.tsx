@@ -12,6 +12,7 @@ import ProviderDashboard from '@/pages/provider-dashboard'
 import { CreateService, EditService, FindServices, ServiceDetails } from '@/pages/services'
 import { ChatRequests, ChatRoom } from '@/pages/chat'
 import ClientDashboard from '@/pages/client-dashboard'
+import { ContractDetails } from '@/pages/contract'
 
 export const router = createBrowserRouter([
   /** Authenticated App */
@@ -93,6 +94,15 @@ export const router = createBrowserRouter([
           {
             path: '/chat/room/:id',
             element: <ChatRoom />,
+          },
+        ],
+      },
+      {
+        path: 'contract',
+        children: [
+          {
+            path: '/contract/:id',
+            element: <ContractDetails />,
           },
         ],
       },

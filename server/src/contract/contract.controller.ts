@@ -14,6 +14,11 @@ export class ContractController {
     return this.contractService.findAll(user)
   }
 
+  @Get(':id')
+  findOneById(@Param('id') id: string, @User() user: SanitizedUser) {
+    return this.contractService.findOneById(id, user)
+  }
+
   @Post('end/:id')
   endContract(@Param('id') id: string, @User() user: SanitizedUser) {
     return this.contractService.endContract(id, user)

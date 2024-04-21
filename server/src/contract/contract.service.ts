@@ -2,6 +2,7 @@ import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/com
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { CreateContractDto } from './contract.dto'
+import { CONTRACT_INCLUDE_FIELDS } from './contract.fields'
 
 @Injectable()
 export class ContractService {
@@ -38,26 +39,12 @@ export class ContractService {
         status: 'ON_GOING',
         OR: [{ serviceProviderId: user.id }, { clientId: user.id }],
       },
-      include: {
-        service: {
-          select: {
-            id: true,
-            name: true,
-            description: true,
-          },
-        },
-        client: {
-          select: { id: true, fullName: true, avatar: true },
-        },
-        serviceProvider: {
-          select: { id: true, fullName: true, avatar: true },
-        },
-      },
+      include: CONTRACT_INCLUDE_FIELDS,
     })
   }
 
   async findOneById(id: string, user: SanitizedUser) {
-    const contract = await this.prisma.contract.findFirst({ where: { id } })
+    const contract = await this.prisma.contract.findFirst({ where: { id }, include: CONTRACT_INCLUDE_FIELDS })
     if (!contract) {
       throw new BadRequestException('Contract not found!')
     }
