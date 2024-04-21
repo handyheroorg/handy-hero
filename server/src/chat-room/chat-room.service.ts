@@ -36,7 +36,7 @@ export class ChatRoomService {
     })
   }
 
-  async findOneById(id: string, user: SanitizedUser) {
+  async findOneById(id: string, user: SanitizedUser, includeEmail?: boolean) {
     const room = await this.prisma.chatRoom.findFirst({ where: { id } })
     if (user.id !== room.providerId && user.id !== room.clientId) {
       throw new ForbiddenException('You are not allowed to access this chat room!')
@@ -47,8 +47,8 @@ export class ChatRoomService {
       include: {
         messages: true,
         service: { select: { id: true, name: true, description: true, price: true, priceType: true, skills: true } },
-        client: { select: { id: true, fullName: true, email: true } },
-        provider: { select: { id: true, fullName: true, email: true } },
+        client: { select: { id: true, fullName: true, email: includeEmail } },
+        provider: { select: { id: true, fullName: true, email: includeEmail } },
       },
     })
   }

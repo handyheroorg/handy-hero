@@ -29,7 +29,7 @@ export class ContractProposalService {
   }
 
   async createProposal(chatRoomId: string, dto: NewContractProposalDto, user: SanitizedUser) {
-    const chatRoom = await this.chatRoomService.findOneById(chatRoomId, user)
+    const chatRoom = await this.chatRoomService.findOneById(chatRoomId, user, true)
     if (chatRoom.status !== 'IN_PROGESS') {
       throw new BadRequestException('This chat room is closed!')
     }
