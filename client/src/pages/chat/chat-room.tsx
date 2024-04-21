@@ -53,7 +53,11 @@ export function ChatRoom() {
                 {user.role === Role.CLIENT ? (
                   <MakeOfferDialog chatRoomId={data.id} servicePrice={data.service.price} status={data.status} />
                 ) : (
-                  <ProcessContractProposal chatRoomId={data.id} status={data.status} />
+                  <ProcessContractProposal
+                    chatRoomId={data.id}
+                    status={data.status}
+                    servicePrice={data.service.price}
+                  />
                 )}
               </div>
 

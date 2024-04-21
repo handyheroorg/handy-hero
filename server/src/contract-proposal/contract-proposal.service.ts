@@ -103,6 +103,7 @@ export class ContractProposalService {
           title: proposal.title,
           description: proposal.description,
         }),
+        this.chatRoomService.updateStatus(chatRoom.id, 'CONTRACT_AWARDED'),
         this.notificationService.sendNotification(chatRoom.clientId, {
           body: `Your proposal has been accepted for ${chatRoom.service.name}.`,
         }),

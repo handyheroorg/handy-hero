@@ -13,4 +13,4 @@ export type ChatRoom = Timestamps & {
   status: ChatRoomStatus
 }
 
-export type ChatRoomStatus = 'IN_PROGESS' | 'CLOSED' | 'PROPOSAL_CREATED'
+export type ChatRoomStatus = 'IN_PROGESS' | 'CLOSED' | 'PROPOSAL_CREATED' | 'CONTRACT_AWARDED'

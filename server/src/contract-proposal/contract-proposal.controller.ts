@@ -34,6 +34,13 @@ export class ContractProposalController {
     return this.contractProposalService.processProposal(chatRoomId, dto, user)
   }
 
+  @UseGuards(RoleGuard)
+  @Role('SERVICE_PROVIDER')
+  @Get(':chatRoomId')
+  findByChatRoomId(@Param('chatRoomId') chatRoomId: string) {
+    return this.contractProposalService.findOneByChatRoomId(chatRoomId)
+  }
+
   @Get()
   findAll(@User() user: SanitizedUser) {
     return this.contractProposalService.findAll(user)
