@@ -10,7 +10,11 @@ export default function Home() {
   }
 
   if (user.role === Role.SERVICE_PROVIDER) {
-    return <Navigate to="/provider/dashboard" />
+    return <Navigate to="/dashboard/provider" />
+  }
+
+  if (user.role === Role.CLIENT) {
+    return <Navigate to="/dashboard/client" />
   }
 
   return <div>Homepage</div>

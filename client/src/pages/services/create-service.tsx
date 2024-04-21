@@ -28,7 +28,7 @@ export function CreateService() {
     onSuccess: () => {
       form.reset()
       toast.success('Service created successfully!')
-      navigate('/provider/dashboard')
+      navigate('/dashboard/provider')
     },
   })
 

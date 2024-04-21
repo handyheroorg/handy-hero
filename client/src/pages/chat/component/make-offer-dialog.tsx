@@ -62,12 +62,8 @@ export default function MakeOfferDialog({ className, style, servicePrice, status
     },
   })
 
-  if (status === 'PROPOSAL_CREATED') {
-    return <p>Proposal is created!</p>
-  }
-
-  if (status === 'CLOSED') {
-    return <p>Room is closed!</p>
+  if (status !== 'IN_PROGESS') {
+    return null
   }
 
   return (

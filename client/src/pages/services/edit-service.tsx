@@ -53,7 +53,7 @@ export function EditService() {
     ))
     .with({ status: 'success' }, ({ data }) => (
       <Container className="!py-4">
-        <Link to="/provider/dashboard" className="mb-8 flex items-center gap-x-4">
+        <Link to="/dashboard/provider" className="mb-8 flex items-center gap-x-4">
           <ArrowLeftIcon className="text-muted-foreground" />
 
           <h1 className="text-2xl font-bold">Edit {data.name}</h1>

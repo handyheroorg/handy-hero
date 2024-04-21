@@ -49,7 +49,7 @@ export default function ProcessContractProposal({
       if (data.status === 'ACCEPTED') {
         navigate('/congratulations')
       } else {
-        navigate('/provider/dashboard')
+        navigate('/dashboard/provider')
       }
 
       toast.success(`Proposal ${data.status.toLowerCase()} successfully!`)

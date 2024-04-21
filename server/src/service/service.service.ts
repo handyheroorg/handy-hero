@@ -24,7 +24,7 @@ export class ServiceService {
      * If this is user's first service, then onboard the user
      */
     if (totalServicesCreated === 0) {
-      await this.usersService.onboardUser(user)
+      await this.usersService.onboardUser(user.id)
     }
 
     return this.prisma.service.create({

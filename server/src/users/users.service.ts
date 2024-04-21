@@ -93,8 +93,8 @@ export class UsersService {
     return sanitizeUser(user)
   }
 
-  async onboardUser(user: SanitizedUser) {
-    const updatedUser = await this.prisma.user.update({ where: { id: user.id }, data: { isOnboarded: true } })
+  async onboardUser(id: string) {
+    const updatedUser = await this.prisma.user.update({ where: { id }, data: { isOnboarded: true } })
     return sanitizeUser(updatedUser)
   }
 

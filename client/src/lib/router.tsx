@@ -11,6 +11,7 @@ import { Role } from '@/types'
 import ProviderDashboard from '@/pages/provider-dashboard'
 import { CreateService, EditService, FindServices, ServiceDetails } from '@/pages/services'
 import { ChatRequests, ChatRoom } from '@/pages/chat'
+import ClientDashboard from '@/pages/client-dashboard'
 
 export const router = createBrowserRouter([
   /** Authenticated App */
@@ -43,9 +44,19 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: 'provider/dashboard',
-        element: <ProviderDashboard />,
-        loader: () => roleGuard([Role.SERVICE_PROVIDER]),
+        path: 'dashboard',
+        children: [
+          {
+            path: '/dashboard/provider',
+            element: <ProviderDashboard />,
+            loader: () => roleGuard([Role.SERVICE_PROVIDER]),
+          },
+          {
+            path: '/dashboard/client',
+            element: <ClientDashboard />,
+            loader: () => roleGuard([Role.CLIENT]),
+          },
+        ],
       },
       {
         path: 'services',
