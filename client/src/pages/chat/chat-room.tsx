@@ -10,6 +10,7 @@ import { useAuthenticatedUser } from '@/hooks'
 import { Role } from '@/types'
 import { Button } from '@/components/ui'
 import MakeOfferDialog from './component/make-offer-dialog'
+import ProcessContractProposal from './component/process-contract-proposal'
 
 export function ChatRoom() {
   const { id } = useParams() as { id: string }
@@ -51,7 +52,9 @@ export function ChatRoom() {
 
                 {user.role === Role.CLIENT ? (
                   <MakeOfferDialog chatRoomId={data.id} servicePrice={data.service.price} status={data.status} />
-                ) : null}
+                ) : (
+                  <ProcessContractProposal chatRoomId={data.id} status={data.status} />
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-4 flex-1">

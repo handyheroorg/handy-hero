@@ -25,9 +25,13 @@ export class ContractProposalController {
 
   @UseGuards(RoleGuard)
   @Role('SERVICE_PROVIDER')
-  @Patch(':id')
-  processProposal(@Param('id') id: string, @Body() dto: ProcessContractProposalDto, @User() user: SanitizedUser) {
-    return this.contractProposalService.processProposal(id, dto, user)
+  @Patch(':chatRoomId')
+  processProposal(
+    @Param('chatRoomId') chatRoomId: string,
+    @Body() dto: ProcessContractProposalDto,
+    @User() user: SanitizedUser,
+  ) {
+    return this.contractProposalService.processProposal(chatRoomId, dto, user)
   }
 
   @Get()

@@ -13,3 +13,7 @@ export const createContractProposalSchema = z.object({
 })
 
 export type CreateContractProposalSchema = z.infer<typeof createContractProposalSchema>
+
+export type ProcessContractProposalDto = {
+  status: 'ACCEPTED' | 'REJECTED'
+}

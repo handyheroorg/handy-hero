@@ -59,11 +59,20 @@ export class ContractProposalService {
     return newProposal
   }
 
-  async processProposal(id: string, dto: ProcessContractProposalDto, user: SanitizedUser) {
-    const proposal = await this.findOneById(id)
+  async findOneByChatRoomId(chatRoomId: string) {
+    const proposal = await this.prisma.contractProposal.findFirst({ where: { chatRoomId } })
+    if (!proposal) {
+      throw new NotFoundException('Proposal not found for this chatroom!')
+    }
+
+    return proposal
+  }
+
+  async processProposal(chatRoomId: string, dto: ProcessContractProposalDto, user: SanitizedUser) {
+    const proposal = await this.findOneByChatRoomId(chatRoomId)
     const chatRoom = await this.chatRoomService.findOneById(proposal.chatRoomId, user)
 
-    if (chatRoom.status !== 'IN_PROGESS') {
+    if (chatRoom.status !== 'PROPOSAL_CREATED') {
       throw new BadRequestException('Chat room is already closed!')
     }
 
@@ -100,7 +109,7 @@ export class ContractProposalService {
       ])
     }
 
-    return this.prisma.contractProposal.update({ where: { id }, data: { status: dto.status } })
+    return this.prisma.contractProposal.update({ where: { id: proposal.id }, data: { status: dto.status } })
   }
 
   findAll(user: SanitizedUser) {
