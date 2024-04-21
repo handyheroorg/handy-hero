@@ -7,6 +7,7 @@ import Loading from '@/components/loading'
 import ErrorMessage from '@/components/error-message'
 import { getErrorMessage } from '@/lib'
 import Container from '@/components/container'
+import EndContractButton from './components/end-contract-button'
 
 export function ContractDetails() {
   const { id } = useParams() as { id: string }
@@ -28,7 +29,7 @@ export function ContractDetails() {
             <div className="text-sm">{data.description}</div>
           </div>
 
-          <div>End Button</div>
+          <EndContractButton contractId={data.id} />
         </div>
 
         <div className="px-6 py-10 rounded-2xl bg-gray-50">

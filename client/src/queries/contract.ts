@@ -32,3 +32,8 @@ export async function fetchContract(id: string) {
   const { data } = await apiClient.get<Contract>(`/contracts/${id}`)
   return data
 }
+
+export async function endContract(id: string) {
+  const { data } = await apiClient.post<Contract>(`/contracts/end/${id}`)
+  return data
+}
