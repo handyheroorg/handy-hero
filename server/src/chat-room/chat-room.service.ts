@@ -1,6 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
+import { ChatRoomStatus } from '@prisma/client'
 import { CreateChatRoomDto, NewMessageDto } from './chat-room.dto'
 
 @Injectable()
@@ -87,5 +88,9 @@ export class ChatRoomService {
     }
 
     return this.prisma.message.delete({ where: { id: message.id } })
+  }
+
+  async updateStatus(id: string, status: ChatRoomStatus) {
+    return this.prisma.chatRoom.update({ where: { id }, data: { status } })
   }
 }

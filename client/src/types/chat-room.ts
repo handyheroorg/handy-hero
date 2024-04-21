@@ -10,4 +10,7 @@ export type ChatRoom = Timestamps & {
   providerId: string
   service: Service
   serviceId: string
+  status: ChatRoomStatus
 }
+
+export type ChatRoomStatus = 'IN_PROGESS' | 'CLOSED' | 'PROPOSAL_CREATED'

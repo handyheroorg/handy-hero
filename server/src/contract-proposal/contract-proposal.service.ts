@@ -30,27 +30,31 @@ export class ContractProposalService {
 
   async createProposal(chatRoomId: string, dto: NewContractProposalDto, user: SanitizedUser) {
     const chatRoom = await this.chatRoomService.findOneById(chatRoomId, user, true)
-    if (chatRoom.status !== 'IN_PROGESS') {
-      throw new BadRequestException('This chat room is closed!')
-    }
 
     const proposal = await this.findOneByChatRoom(chatRoomId)
     if (proposal) {
       throw new BadRequestException('Proposal for this chat room already exists!')
     }
 
+    if (chatRoom.status !== 'IN_PROGESS') {
+      throw new BadRequestException('This chat room is closed!')
+    }
+
     const newProposal = await this.prisma.contractProposal.create({
       data: { chatRoom: { connect: { id: chatRoom.id } }, ...dto },
     })
 
-    await this.notificationService.sendEmailAndInApp({
-      receiverId: chatRoom.providerId,
-      receiverEmail: chatRoom.provider.email,
-      receiverName: chatRoom.provider.fullName,
-      subject: 'New proposal received',
-      body: `You have received a new proposal for ${chatRoom.service.name}.`,
-      buttonUrl: `/proposal/process/${newProposal.id}`,
-    })
+    await Promise.all([
+      this.chatRoomService.updateStatus(chatRoom.id, 'PROPOSAL_CREATED'),
+      this.notificationService.sendEmailAndInApp({
+        receiverId: chatRoom.providerId,
+        receiverEmail: chatRoom.provider.email,
+        receiverName: chatRoom.provider.fullName,
+        subject: 'New proposal received',
+        body: `You have received a new proposal for ${chatRoom.service.name}.`,
+        buttonUrl: `/proposal/process/${newProposal.id}`,
+      }),
+    ])
 
     return newProposal
   }
