@@ -137,6 +137,37 @@ export function Signup() {
               </FormItem>
             )}
           />
+            <FormField
+            control={form.control}
+            name="mobileNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mobile Number</FormLabel>
+
+                <FormControl>
+                  <Input placeholder="Enter your Mobile Number" disabled={signupMutation.isPending} {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+<FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Country</FormLabel>
+
+                <FormControl>
+                  <Input placeholder="Enter your Country" disabled={signupMutation.isPending} {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <Button className="w-max" type="submit" icon={<LogInIcon />} loading={signupMutation.isPending}>
             Signup
