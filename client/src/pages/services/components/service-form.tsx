@@ -91,7 +91,14 @@ export default function ServiceForm({
               <FormItem>
                 <FormLabel>Price (in $)</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="Enter the name of your service" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Enter the name of your service"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.valueAsNumber)
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -129,7 +136,14 @@ export default function ServiceForm({
                 <FormItem>
                   <FormLabel>Max Hours</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Enter max hours" {...field} />
+                    <Input
+                      type="number"
+                      placeholder="Enter max hours"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e.target.valueAsNumber)
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
