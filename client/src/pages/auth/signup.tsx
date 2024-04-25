@@ -137,7 +137,7 @@ export function Signup() {
               </FormItem>
             )}
           />
-            <FormField
+          <FormField
             control={form.control}
             name="mobileNumber"
             render={({ field }) => (
@@ -153,7 +153,7 @@ export function Signup() {
             )}
           />
 
-<FormField
+          <FormField
             control={form.control}
             name="country"
             render={({ field }) => (
