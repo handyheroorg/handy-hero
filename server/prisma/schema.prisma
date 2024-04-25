@@ -33,6 +33,11 @@ model User {
   avatar   File?   @relation(name: "Avatar", fields: [avatarId], references: [id])
   avatarId String? @unique @db.ObjectId
 
+  squareCustomerId       String
+  isPaymentVerified      Boolean @default(false)
+  isMobileNumberVerified Boolean @default(false)
+  isEmailVerified        Boolean @default(false)
+
   feedbacks           Feedback[]    @relation(name: "FeedbacksGiven")
   chatRequestCreated  ChatRequest[] @relation(name: "ChatRequestCreated")
   chatRequestReceived ChatRequest[] @relation(name: "ChatRequestReceived")

@@ -3,17 +3,26 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { sanitizeUser } from 'src/utils'
 import { Prisma, ServiceProviderProfile } from '@prisma/client'
 import { merge } from 'remeda'
+import { SquareService } from 'src/square/square.service'
 import { CreateUserDto, UpdateLocationDto, UpdateProfileDto, UpdateUserDto } from './users.dto'
 import { SanitizedUser } from './users.types'
 import { USER_INCLUDE_FIELDS } from './user.fields'
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly squareService: SquareService) {}
 
   async createUser(dto: CreateUserDto) {
+    const [firstName, ...lastName] = dto.fullName.split(' ')
+
+    const squareCustomer = await this.squareService.addCustomer({
+      givenName: firstName,
+      familyName: lastName.join(' '),
+      emailAddress: dto.email,
+    })
+
     const userCreated = await this.prisma.user.create({
-      data: dto,
+      data: { ...dto, squareCustomerId: squareCustomer.id },
       select: { id: true, fullName: true, email: true, role: true, mobileNumber: true },
     })
 
