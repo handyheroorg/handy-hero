@@ -9,7 +9,10 @@ import { JwtPayload } from '../auth.types'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly configService: ConfigService<Environment>, private readonly usersService: UsersService) {
+  constructor(
+    private readonly configService: ConfigService<Environment>,
+    private readonly usersService: UsersService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,

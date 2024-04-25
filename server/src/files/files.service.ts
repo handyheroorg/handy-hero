@@ -9,7 +9,10 @@ import { SanitizedUser } from 'src/users/users.types'
 export class FilesService {
   s3Client: S3Client
 
-  constructor(private readonly prisma: PrismaService, private readonly configService: ConfigService<Environment>) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService<Environment>,
+  ) {
     this.s3Client = new S3Client({
       region: 'ap-south-1',
       credentials: {

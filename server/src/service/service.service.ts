@@ -9,7 +9,10 @@ import { SERVICE_INCLUDE_FIELDS } from './service.fields'
 
 @Injectable()
 export class ServiceService {
-  constructor(private readonly prisma: PrismaService, private readonly usersService: UsersService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly usersService: UsersService,
+  ) {}
 
   async createService(dto: CreateServiceDto, user: SanitizedUser) {
     const profile = await this.usersService.findProfile(user.id)
