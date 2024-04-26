@@ -5,7 +5,7 @@ import Error from '@/pages/error'
 import Home from '@/pages/home'
 import AuthLayout, { Login, Signup } from '@/pages/auth'
 import Welcome from '@/pages/welcome'
-import Settings, { BasicSettings, Profile } from '@/pages/settings'
+import Settings, { AddPaymentMethod, BasicSettings, BillingAndPayments, Profile } from '@/pages/settings'
 import { roleGuard } from './guard'
 import { Role } from '@/types'
 import ProviderDashboard from '@/pages/provider-dashboard'
@@ -41,6 +41,14 @@ export const router = createBrowserRouter([
             path: '/settings/profile',
             element: <Profile />,
             loader: () => roleGuard([Role.SERVICE_PROVIDER]),
+          },
+          {
+            path: '/settings/billing-and-payments',
+            element: <BillingAndPayments />,
+          },
+          {
+            path: '/settings/add-payment-method',
+            element: <AddPaymentMethod />,
           },
         ],
       },

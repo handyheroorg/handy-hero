@@ -119,26 +119,6 @@ export function Signup() {
 
           <FormField
             control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Enter your password"
-                    disabled={signupMutation.isPending}
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="mobileNumber"
             render={({ field }) => (
               <FormItem>
@@ -162,6 +142,27 @@ export function Signup() {
 
                 <FormControl>
                   <Input placeholder="Enter your Country" disabled={signupMutation.isPending} {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Enter your password"
+                    disabled={signupMutation.isPending}
+                    {...field}
+                  />
                 </FormControl>
 
                 <FormMessage />
