@@ -75,7 +75,7 @@ export default function ServiceForm({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Service Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter the name of your service" {...field} />
                 </FormControl>
@@ -91,7 +91,7 @@ export default function ServiceForm({
               <FormItem>
                 <FormLabel>Price (in $)</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="Enter the name of your service" {...field} />
+                  <Input type="number" placeholder="Enter your service price" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
