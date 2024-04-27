@@ -11,6 +11,7 @@ import { Role } from '@/types'
 import { Button } from '@/components/ui'
 import MakeOfferDialog from './component/make-offer-dialog'
 import ProcessContractProposal from './component/process-contract-proposal'
+import ChatRooms from '@/components/chat-rooms'
 
 export function ChatRoom() {
   const { id } = useParams() as { id: string }
@@ -38,7 +39,9 @@ export function ChatRoom() {
       return (
         <div className="flex items-center justify-center h-[93vh]">
           <div className="grid grid-cols-1 md:grid-cols-5 h-[90%] p-0 overflow-hidden w-full max-w-screen-2xl border">
-            <div className="hidden md:block border-r">ChatRooms</div>
+            <div className="hidden md:block border-r">
+              <ChatRooms className="border-none rounded-none" />
+            </div>
             <div className="md:col-span-4 md:border-r flex flex-col">
               <div className="px-4 w-full flex items-center justify-between border-b h-16">
                 <div>

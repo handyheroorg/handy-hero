@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { cn, getErrorMessage } from '@/lib'
 import { BasicProps, Role } from '@/types'
 import { fetchChatRooms } from '@/queries'
@@ -46,9 +46,14 @@ export default function ChatRooms({ className, style }: ChatRoomsProps) {
             const secondPerson = user.role === Role.CLIENT ? room.provider : room.client
 
             return (
-              <Link
+              <NavLink
                 key={room.id}
-                className="border-b px-4 py-2 hover:bg-muted-foreground/5 cursor-pointer flex gap-2"
+                className={({ isActive }) =>
+                  cn(
+                    'border-b px-4 py-2 hover:bg-muted-foreground/5 cursor-pointer flex gap-2',
+                    isActive && 'bg-muted-foreground/5',
+                  )
+                }
                 to={`/chat/room/${room.id}`}
               >
                 {secondPerson.avatar?.publicUrl && (
@@ -63,7 +68,7 @@ export default function ChatRooms({ className, style }: ChatRoomsProps) {
                   <h1 className="text-lg">{secondPerson.fullName}</h1>
                   <p className="text-sm text-muted-foreground">{room.service.name}</p>
                 </div>
-              </Link>
+              </NavLink>
             )
           })}
         </div>
