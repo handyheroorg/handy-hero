@@ -18,6 +18,9 @@ export type User = Timestamps & {
   isOnboarded: boolean
   mobileNumber: string
   location: Location | null
+  isPaymentVerified: boolean
+  isMobileNumberVerified: boolean
+  isEmailVerified: boolean
 }
 
 export type Location = Timestamps & {
