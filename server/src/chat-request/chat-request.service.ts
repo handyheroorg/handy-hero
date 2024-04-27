@@ -98,6 +98,13 @@ export class ChatRequestService {
       throw new BadRequestException('Invalid status provided!')
     }
 
+    /**
+     * If this is client's first contract, then onboard the user
+     */
+    if ((await this.prisma.contract.count({ where: { clientId: chatRequest.clientId } })) === 0) {
+      await this.userService.onboardUser(chatRequest.clientId)
+    }
+
     await Promise.all([
       /** If a chat request is ACCEPTED then a chat room will be created */
       this.chatRoomService.createChatRoom({
