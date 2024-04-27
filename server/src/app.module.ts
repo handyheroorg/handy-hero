@@ -16,6 +16,7 @@ import { ContractProposalModule } from './contract-proposal/contract-proposal.mo
 import { ContractModule } from './contract/contract.module'
 import { FilesModule } from './files/files.module'
 import { DashboardModule } from './dashboard/dashboard.module'
+import { SquareModule } from './square/square.module'
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { DashboardModule } from './dashboard/dashboard.module'
     ContractModule,
     FilesModule,
     DashboardModule,
+    SquareModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

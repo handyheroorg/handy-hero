@@ -4,7 +4,6 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { SanitizedUser } from 'src/users/users.types'
 import { NotificationService } from 'src/notification/notification.service'
 import { ContractService } from 'src/contract/contract.service'
-import { UsersService } from 'src/users/users.service'
 import { NewContractProposalDto, ProcessContractProposalDto } from './contract-proposal.dto'
 
 @Injectable()
@@ -14,7 +13,6 @@ export class ContractProposalService {
     private readonly chatRoomService: ChatRoomService,
     private readonly notificationService: NotificationService,
     private readonly contractService: ContractService,
-    private readonly userService: UsersService,
   ) {}
 
   async findOneByChatRoom(chatRoomId: string) {
@@ -96,13 +94,6 @@ export class ContractProposalService {
     }
 
     if (dto.status === 'ACCEPTED') {
-      /**
-       * If this is client's first contract, then onboard the user
-       */
-      if ((await this.prisma.contract.count({ where: { clientId: chatRoom.clientId } })) === 0) {
-        await this.userService.onboardUser(chatRoom.clientId)
-      }
-
       await Promise.all([
         this.contractService.createContract({
           clientId: chatRoom.clientId,

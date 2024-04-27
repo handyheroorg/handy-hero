@@ -18,6 +18,6 @@ export const signupSchema = z.object({
     .max(50, 'Password cannot be longer than 50 characters!'),
   role: z.nativeEnum(omit(Role, ['ADMIN'])),
   mobileNumber: z.string().min(10, 'Please enter correct mobile number').max(13, 'Please enter correct mobile number'),
-  country: z.string().min(2, 'Please enter correct country name')
+  country: z.string().min(2, 'Please enter correct country name'),
 })
 export type SignupSchema = z.infer<typeof signupSchema>

@@ -10,7 +10,7 @@ export const createServiceSchema = z
       .optional(),
     thumbnail: z.string({ required_error: 'Please upload an image for thumbnail of your service!' }),
     skills: z.array(z.string()).min(1, 'Please add at least one skill!'),
-    price: z.coerce.number({ invalid_type_error: 'Please enter price!' }).min(0.1, 'Please enter your service price!'),
+    price: z.number({ invalid_type_error: 'Please enter price!' }).min(0.1, 'Please enter your service price!'),
     priceType: z.enum(['HOURLY', 'FIXED']),
     maxHours: z.number().positive().optional().nullable(),
   })

@@ -1,3 +1,5 @@
 export { default } from './settings'
 export * from './basic-settings'
 export * from './profile'
+export * from './billing-and-payments'
+export * from './add-payment-method'

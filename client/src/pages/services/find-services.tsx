@@ -35,7 +35,18 @@ export function FindServices() {
   return (
     <Container className="!py-4 grid grid-cols-1 md:grid-cols-5 gap-4">
       <div className="md:col-span-4">
-        <div className="w-full rounded-lg bg-muted-foreground/10 h-56 mb-4" />
+        <div className="w-full rounded-2xl bg-emerald-800 h-56 mb-4 flex items-center text-white gap-4 px-10 py-6">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Find the Right Fit for Your Needs</h1>
+            <p className="text-sm">
+              Explore a wide range of services and find the perfect match for your requirements. Use our search and
+              filters to discover services tailored to your preferences.
+            </p>
+          </div>
+          <div className="w-1/3">
+            <img src="/search.svg" className="w-full h-44 object-contain" alt="search" />
+          </div>
+        </div>
 
         <div className="border rounded-full py-2 px-4 flex items-center gap-4 mb-4">
           <input
@@ -103,89 +114,91 @@ export function FindServices() {
           .exhaustive()}
       </div>
       <div>
-        <div className="w-full rounded-lg bg-muted-foreground/10 h-56 mb-4" />
+        <div className="w-full rounded-2xl bg-emerald-800 h-56 mb-4" />
 
-        <div className="mb-4 flex items-center gap-2 justify-between">
-          <h2 className="text-lg font-medium">Filters</h2>
+        <div className="bg-muted-foreground/10 p-4 rounded-2xl">
+          <div className="mb-4 flex items-center gap-2 justify-between">
+            <h2 className="text-lg font-medium">Filters</h2>
 
-          {isFilterApplied && (
-            <Button
-              icon={<XIcon />}
-              variant="ghost"
-              size="icon"
-              onClick={() => {
-                setSearchParams({})
+            {isFilterApplied && (
+              <Button
+                icon={<XIcon />}
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  setSearchParams({})
+                }}
+              />
+            )}
+          </div>
+
+          <SkillsSelector
+            className="mb-4"
+            value={filters.skills}
+            onChange={(skills) => {
+              setSearchParams((prev) => {
+                if (skills.length === 0) {
+                  prev.delete('skills')
+                  return prev
+                }
+
+                skills.forEach((skill) => prev.append('skills', skill))
+                return prev
+              })
+            }}
+          />
+
+          <div className="mb-4">
+            <Select
+              defaultValue={filters.priceType}
+              onValueChange={(priceType) => {
+                setSearchParams((prev) => {
+                  prev.set('priceType', priceType)
+                  return prev
+                })
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select price type" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="FIXED">Fixed</SelectItem>
+                <SelectItem value="HOURLY">Hourly</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="mb-4">
+            <Label className="mb-4 block">Min Price {filters.minPrice && `($${filters.minPrice})`}</Label>
+            <Slider
+              value={[filters.minPrice ?? 0]}
+              min={0}
+              step={5}
+              max={1000}
+              onValueChange={(value) => {
+                setSearchParams((prev) => {
+                  prev.set('minPrice', value[0].toString())
+                  return prev
+                })
               }}
             />
-          )}
-        </div>
+          </div>
 
-        <SkillsSelector
-          className="mb-4"
-          value={filters.skills}
-          onChange={(skills) => {
-            setSearchParams((prev) => {
-              if (skills.length === 0) {
-                prev.delete('skills')
-                return prev
-              }
-
-              skills.forEach((skill) => prev.append('skills', skill))
-              return prev
-            })
-          }}
-        />
-
-        <div className="mb-4">
-          <Select
-            defaultValue={filters.priceType}
-            onValueChange={(priceType) => {
-              setSearchParams((prev) => {
-                prev.set('priceType', priceType)
-                return prev
-              })
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select price type" />
-            </SelectTrigger>
-
-            <SelectContent>
-              <SelectItem value="FIXED">Fixed</SelectItem>
-              <SelectItem value="HOURLY">Hourly</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="mb-4">
-          <Label className="mb-4 block">Min Price {filters.minPrice && `($${filters.minPrice})`}</Label>
-          <Slider
-            value={[filters.minPrice ?? 0]}
-            min={0}
-            step={5}
-            max={1000}
-            onValueChange={(value) => {
-              setSearchParams((prev) => {
-                prev.set('minPrice', value[0].toString())
-                return prev
-              })
-            }}
-          />
-        </div>
-
-        <div className="mb-4">
-          <Label className="mb-4 block">Max Price {filters.maxPrice && `($${filters.maxPrice})`}</Label>
-          <Slider
-            value={[filters.maxPrice ?? 0]}
-            min={Number(filters.minPrice)}
-            max={Number(filters.minPrice) + 1000}
-            onValueChange={(value) => {
-              setSearchParams((prev) => {
-                prev.set('maxPrice', value[0].toString())
-                return prev
-              })
-            }}
-          />
+          <div className="mb-4">
+            <Label className="mb-4 block">Max Price {filters.maxPrice && `($${filters.maxPrice})`}</Label>
+            <Slider
+              value={[filters.maxPrice ?? 0]}
+              min={Number(filters.minPrice)}
+              max={Number(filters.minPrice) + 1000}
+              onValueChange={(value) => {
+                setSearchParams((prev) => {
+                  prev.set('maxPrice', value[0].toString())
+                  return prev
+                })
+              }}
+            />
+          </div>
         </div>
       </div>
     </Container>
