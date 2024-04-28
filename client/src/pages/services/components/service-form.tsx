@@ -91,7 +91,14 @@ export default function ServiceForm({
               <FormItem>
                 <FormLabel>Price (in $)</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="Enter your service price" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Enter your service price"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.valueAsNumber)
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
