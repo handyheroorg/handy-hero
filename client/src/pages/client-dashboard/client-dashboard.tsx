@@ -40,7 +40,7 @@ export default function ClientDashboard() {
 
       <div className="flex gap-4">
         <ContractsList className="flex-[2]" />
-        <ChatRooms className="flex-1" />
+        <ChatRooms className="flex-1 border rounded-lg" />
       </div>
     </Container>
   )

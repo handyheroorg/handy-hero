@@ -5,13 +5,25 @@ import { cn, getErrorMessage } from '@/lib'
 import { BasicProps, Role } from '@/types'
 import { fetchChatRooms } from '@/queries'
 import ErrorMessage from '../error-message'
-import { Skeleton } from '../ui'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  buttonVariants,
+  Skeleton,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui'
 import { useAuthenticatedUser } from '@/hooks'
 import EmptyMessage from '../empty-message'
 
-type ChatRoomsProps = BasicProps
+type ChatRoomsProps = BasicProps & {
+  isCollapsed?: boolean
+}
 
-export default function ChatRooms({ className, style }: ChatRoomsProps) {
+export default function ChatRooms({ className, style, isCollapsed }: ChatRoomsProps) {
   const { user } = useAuthenticatedUser()
   const chatRoomsQuery = useQuery({
     queryKey: ['chat-rooms'],
@@ -37,40 +49,77 @@ export default function ChatRooms({ className, style }: ChatRoomsProps) {
       }
 
       return (
-        <div className={cn('border rounded-lg overflow-y-auto max-h-[600px]', className)} style={style}>
-          <div className="p-4 bg-muted-foreground/5">
-            <h1 className="text-lg font-bold">Your chat rooms</h1>
-          </div>
+        <div
+          data-collapsed={isCollapsed}
+          className={cn('relative group flex flex-col h-full gap-4 p-2 data-[collapsed=true]:p-2', className)}
+          style={style}
+        >
+          {!isCollapsed && (
+            <div className="flex gap-2 items-center text-2xl p-2">
+              <p className="font-medium">Chats</p>
+              <span className="text-zinc-300">({data.length})</span>
+            </div>
+          )}
+          <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+            {data.map((room, index) => {
+              const secondPerson = user.role === Role.CLIENT ? room.provider : room.client
+              const to = `/chat/room/${room.id}`
 
-          {data.map((room) => {
-            const secondPerson = user.role === Role.CLIENT ? room.provider : room.client
-
-            return (
-              <NavLink
-                key={room.id}
-                className={({ isActive }) =>
-                  cn(
-                    'border-b px-4 py-2 hover:bg-muted-foreground/5 cursor-pointer flex gap-2',
-                    isActive && 'bg-muted-foreground/5',
-                  )
-                }
-                to={`/chat/room/${room.id}`}
-              >
-                {secondPerson.avatar?.publicUrl && (
-                  <img
-                    src={secondPerson.avatar?.publicUrl}
-                    alt={secondPerson.fullName}
-                    className="size-10 rounded-full object-cover"
-                  />
-                )}
-
-                <div>
-                  <h1 className="text-lg">{secondPerson.fullName}</h1>
-                  <p className="text-sm text-muted-foreground">{room.service.name}</p>
-                </div>
-              </NavLink>
-            )
-          })}
+              return isCollapsed ? (
+                <TooltipProvider key={index}>
+                  <Tooltip key={index} delayDuration={0}>
+                    <TooltipTrigger asChild>
+                      <NavLink
+                        to={to}
+                        className={({ isActive }) =>
+                          cn(
+                            buttonVariants({ variant: isActive ? 'default' : 'ghost', size: 'icon' }),
+                            'h-11 w-11 md:h-16 md:w-16',
+                          )
+                        }
+                      >
+                        <Avatar className="flex justify-center items-center">
+                          <AvatarImage
+                            src={secondPerson.avatar?.publicUrl}
+                            alt={secondPerson.fullName}
+                            width={6}
+                            height={6}
+                            className="w-10 h-10 "
+                          />
+                          <AvatarFallback>{secondPerson.fullName[0]}</AvatarFallback>
+                        </Avatar>
+                        <span className="sr-only">{secondPerson.fullName}</span>
+                      </NavLink>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" className="flex items-center gap-4">
+                      {secondPerson.fullName}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : (
+                <NavLink
+                  key={index}
+                  to={to}
+                  className={({ isActive }) =>
+                    cn(buttonVariants({ variant: isActive ? 'default' : 'ghost' }), 'justify-start gap-4')
+                  }
+                >
+                  {!!secondPerson.avatar?.publicUrl && (
+                    <Avatar className="flex justify-center items-center">
+                      <AvatarImage
+                        src={secondPerson.avatar?.publicUrl}
+                        alt={secondPerson.fullName}
+                        width={6}
+                        height={6}
+                        className="w-10 h-10 "
+                      />
+                    </Avatar>
+                  )}
+                  <div className="max-w-28">{secondPerson.fullName}</div>
+                </NavLink>
+              )
+            })}
+          </nav>
         </div>
       )
     })

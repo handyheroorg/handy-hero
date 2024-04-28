@@ -1,21 +1,42 @@
 import { useParams } from 'react-router-dom'
 import { match } from 'ts-pattern'
+import cookie from 'js-cookie'
+import { useEffect, useState } from 'react'
 import Loading from '@/components/loading'
 import ErrorMessage from '@/components/error-message'
-import { getErrorMessage } from '@/lib'
+import { cn, getErrorMessage } from '@/lib'
 import { useAuthenticatedUser, useChatRoom } from '@/hooks'
 import { Role } from '@/types'
-import MakeOfferDialog from './component/make-offer-dialog'
-import ProcessContractProposal from './component/process-contract-proposal'
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui'
 import ChatRooms from '@/components/chat-rooms'
-import NewMessageForm from './component/new-message-form'
-import { Messages } from './component/messages'
+import ChatTopBar from './component/chat-top-bar'
+import ChatList from './component/chat-list'
 
 export function ChatRoom() {
   const { id } = useParams() as { id: string }
   const { user } = useAuthenticatedUser()
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  const layout = cookie.get('react-resizable-panels:layout')
+  const defaultLayout = layout ? JSON.parse(layout) : [320, 480]
 
   const { chatRoomQuery, sendNewMessage, messages } = useChatRoom(id)
+
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    // Initial check
+    checkScreenWidth()
+
+    window.addEventListener('resize', checkScreenWidth)
+
+    return () => {
+      window.removeEventListener('resize', checkScreenWidth)
+    }
+  }, [])
 
   return match(chatRoomQuery)
     .with({ status: 'pending' }, () => (
@@ -32,65 +53,49 @@ export function ChatRoom() {
       const secondPerson = user.role === Role.CLIENT ? data.provider : data.client
 
       return (
-        <div className="flex items-center justify-center h-[93vh]">
-          <div className="grid grid-cols-1 md:grid-cols-5 h-[90%] p-0 overflow-hidden w-full max-w-screen-2xl border">
-            <div className="hidden md:block border-r">
-              <ChatRooms className="border-none rounded-none" />
-            </div>
-            <div className="md:col-span-4 md:border-r flex flex-col">
-              <div className="px-4 w-full flex items-center justify-between border-b h-16">
-                <div>
-                  <div className="flex gap-2 items-center">
-                    <h1 className="text-xl font-medium">{secondPerson.fullName}</h1>
-                    <div className="size-2 rounded-full bg-emerald-500" />
-                  </div>
-
-                  <p className="text-xs text-muted-foreground">{data.service.name}</p>
-                </div>
-
-                {user.role === Role.CLIENT ? (
-                  <MakeOfferDialog chatRoomId={data.id} servicePrice={data.service.price} status={data.status} />
-                ) : (
-                  <ProcessContractProposal
+        <main className="flex h-[94vh] flex-col items-center justify-center p-4 py-10 gap-4">
+          <div className="z-10 border rounded-lg max-w-screen-xl w-full h-full text-sm lg:flex">
+            <ResizablePanelGroup
+              direction="horizontal"
+              onLayout={(sizes: number[]) => {
+                document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`
+              }}
+              className="h-full items-stretch"
+            >
+              <ResizablePanel
+                defaultSize={defaultLayout[0]}
+                collapsedSize={8}
+                collapsible={true}
+                minSize={isMobile ? 0 : 24}
+                maxSize={isMobile ? 8 : 30}
+                onCollapse={() => {
+                  setIsCollapsed(true)
+                  cookie.set('react-resizable-panels:collapsed', JSON.stringify(true))
+                }}
+                onExpand={() => {
+                  setIsCollapsed(false)
+                  cookie.set('react-resizable-panels:collapsed', JSON.stringify(false))
+                }}
+                className={cn(isCollapsed && 'min-w-[50px] md:min-w-[70px] transition-all duration-300 ease-in-out')}
+              >
+                <ChatRooms isCollapsed={isCollapsed} />
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
+                <div className="flex flex-col justify-between w-full h-full">
+                  <ChatTopBar
+                    selectedUser={secondPerson}
                     chatRoomId={data.id}
-                    status={data.status}
                     servicePrice={data.service.price}
+                    status={data.status}
                   />
-                )}
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-4 flex-1">
-                <div className="md:col-span-3 flex flex-col">
-                  <Messages messages={messages} className="flex-1" />
-                  <NewMessageForm
-                    onSubmit={(data) => {
-                      sendNewMessage(data.message)
-                    }}
-                  />
+                  <ChatList messages={messages} sendMessage={sendNewMessage} />
                 </div>
-                <div className="hidden md:block border-l h-full px-4 py-2">
-                  <h1 className="text-lg font-medium">{data.service.name}</h1>
-                  <p className="text-sm">
-                    ${data.service.price} {data.service.priceType}
-                  </p>
-
-                  {!!data.service.description && (
-                    <p className="text-xs text-muted-foreground my-2">{data.service.description}</p>
-                  )}
-
-                  {data.service.skills.map((skill, i) => (
-                    <div
-                      className="w-max px-6 py-2 rounded-full bg-muted-foreground/5 text-muted-foreground mt-4"
-                      key={`${skill}-${i}`}
-                    >
-                      {skill}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
           </div>
-        </div>
+        </main>
       )
     })
     .exhaustive()
