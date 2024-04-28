@@ -1,26 +1,21 @@
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
-import { SendIcon } from 'lucide-react'
-import { fetchChatRoom } from '@/queries'
 import Loading from '@/components/loading'
 import ErrorMessage from '@/components/error-message'
 import { getErrorMessage } from '@/lib'
-import { useAuthenticatedUser } from '@/hooks'
+import { useAuthenticatedUser, useChatRoom } from '@/hooks'
 import { Role } from '@/types'
-import { Button } from '@/components/ui'
 import MakeOfferDialog from './component/make-offer-dialog'
 import ProcessContractProposal from './component/process-contract-proposal'
 import ChatRooms from '@/components/chat-rooms'
+import NewMessageForm from './component/new-message-form'
+import { Messages } from './component/messages'
 
 export function ChatRoom() {
   const { id } = useParams() as { id: string }
   const { user } = useAuthenticatedUser()
 
-  const chatRoomQuery = useQuery({
-    queryKey: ['chat-room', id],
-    queryFn: () => fetchChatRoom(id),
-  })
+  const { chatRoomQuery, sendNewMessage, messages } = useChatRoom(id)
 
   return match(chatRoomQuery)
     .with({ status: 'pending' }, () => (
@@ -66,11 +61,12 @@ export function ChatRoom() {
 
               <div className="grid grid-cols-1 md:grid-cols-4 flex-1">
                 <div className="md:col-span-3 flex flex-col">
-                  <div className="flex-1">Chat messages</div>
-                  <form className="h-16 w-full border-t px-4 flex items-center justify-between gap-x-2">
-                    <input className="focus-visible:outline-none flex-1" placeholder="Type your message" />
-                    <Button icon={<SendIcon />} />
-                  </form>
+                  <Messages messages={messages} className="flex-1" />
+                  <NewMessageForm
+                    onSubmit={(data) => {
+                      sendNewMessage(data.message)
+                    }}
+                  />
                 </div>
                 <div className="hidden md:block border-l h-full px-4 py-2">
                   <h1 className="text-lg font-medium">{data.service.name}</h1>

@@ -12,6 +12,10 @@ function removeStoredAccessToken() {
   localStorage.removeItem(AUTH_TOKEN_KEY)
 }
 
+export function getStoresAccessToken() {
+  return localStorage.getItem(AUTH_TOKEN_KEY)
+}
+
 function useAuth() {
   const {
     isLoading: isAuthInProgress,

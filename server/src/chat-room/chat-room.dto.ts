@@ -18,4 +18,12 @@ export class NewMessageDto {
   @IsOptional()
   @IsBoolean()
   seen?: boolean
+
+  @IsMongoId()
+  roomId: string
+}
+
+export class JoinRoomDto {
+  @IsMongoId()
+  roomId: string
 }

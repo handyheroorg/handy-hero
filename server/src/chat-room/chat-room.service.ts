@@ -46,7 +46,7 @@ export class ChatRoomService {
     return this.prisma.chatRoom.findFirst({
       where: { id },
       include: {
-        messages: true,
+        messages: { orderBy: { createdAt: 'asc' } },
         service: { select: { id: true, name: true, description: true, price: true, priceType: true, skills: true } },
         client: { select: { id: true, fullName: true, email: includeEmail } },
         provider: { select: { id: true, fullName: true, email: includeEmail } },
@@ -59,8 +59,8 @@ export class ChatRoomService {
     return this.prisma.chatRoom.update({ where: { id: chatRoom.id }, data: { status: 'CLOSED' } })
   }
 
-  async addMessage(chatRoomId: string, dto: NewMessageDto, user: SanitizedUser) {
-    const chatRoom = await this.findOneById(chatRoomId, user)
+  async addMessage(dto: NewMessageDto, user: SanitizedUser) {
+    const chatRoom = await this.findOneById(dto.roomId, user)
 
     return this.prisma.message.create({
       data: {

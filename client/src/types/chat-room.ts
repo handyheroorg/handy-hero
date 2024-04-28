@@ -11,6 +11,24 @@ export type ChatRoom = Timestamps & {
   service: Service
   serviceId: string
   status: ChatRoomStatus
+  messages: Message[]
 }
 
 export type ChatRoomStatus = 'IN_PROGESS' | 'CLOSED' | 'PROPOSAL_CREATED' | 'CONTRACT_AWARDED'
+
+export type RoomJoinedData = {
+  userId: string
+  socketId: string
+}
+
+export type Message = Timestamps & {
+  id: string
+  content: string
+  seen: boolean
+  sentBy: User
+  sentById: string
+  chatRoom: ChatRoom
+  chatRoomId: string
+}
+
+export type NewMessageData = Message
