@@ -32,13 +32,29 @@ Handy Hero utilizes a modern tech stack to deliver its services. The backend is 
 - Implementing a seamless user experience while maintaining transparency in service costs and quality posed challenges in UI/UX design and system architecture.
 
 ## Usage Instructions
-[Provide instructions on how to set up and run the project locally.]
+To run the project locally first the user need to install the required dependencies in both client and server side for package manager we are using **pnpm** so the very first command to run after git clone will be ```pnpm install``` on both client and server side
+after this the user needs to setup some _environmental variables_ on both side all the required variables are already present in **example.env** file all you need to do is to create a **.env** file and create all those variables some values are already provided and some you need to fill yourself 
+- for variables related to AWS you need to enter your own key if you don't have don't worry you can just enter any random string and voila.
+at last all you need to do is run your app locally ```pnpm dev``` if in the child folder e.g client/server, from the parent folder it will be like  ```pnpm dev:server | pnpm dev:client```
 
 ## Testing
-[Describe the testing procedures and methodologies employed to ensure the functionality of features.]
+For testing purpose we have made two demo accounts for both Client and Service provider
 
+**Client**
+email: testuser1@gmail.com
+password: testuser
+
+**Service Provider**
+email: testuser2@gmail.com
+password: testuser2
+
+Through client's account we can hire service provider, search from different categories and choose the best.
+Through Service Provider's account we can create different services that they provide these services will be displayed on the client side also we can update the information of the service that we provider like change in the price, service quality and many more, also service provider have all the control over the client if they want to accept the offer made by them or not. 
 ## Future Improvements
-[Outline potential enhancements or features to be added in future iterations of Handy Hero.]
+There are some features that we wanted to add but unfortunately couldn't, so the improvements that we have thought is:
+- Create **Feedback** so that client can get the best results for what they pay for.
+- adding **maps** this will allow users to filter the service providers by their location to avoid conflicts as who wants to hire someone for fixing their badly aligned tiles from _100 miles_ away.
+- MOST IMPORTANT **Better approach for payment method** as customer's security should need to be the priority.
 
 ## Conclusions
 Handy Hero aims to revolutionize the home service industry by providing a transparent and efficient platform for connecting service providers with homeowners. With its user-friendly interface and robust backend architecture, Handy Hero strives to deliver a seamless experience for all users involved.
