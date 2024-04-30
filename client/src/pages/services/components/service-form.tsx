@@ -75,7 +75,7 @@ export default function ServiceForm({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Service Name</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter the name of your service" {...field} />
                 </FormControl>
@@ -93,7 +93,7 @@ export default function ServiceForm({
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Enter the name of your service"
+                    placeholder="Enter your service price"
                     {...field}
                     onChange={(e) => {
                       field.onChange(e.target.valueAsNumber)
@@ -136,14 +136,7 @@ export default function ServiceForm({
                 <FormItem>
                   <FormLabel>Max Hours</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Enter max hours"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e.target.valueAsNumber)
-                      }}
-                    />
+                    <Input type="number" placeholder="Enter max hours" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
