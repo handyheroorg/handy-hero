@@ -16,7 +16,7 @@ import { ChatRoomService } from './chat-room.service'
 type SocketWithUser = Socket & { user: SanitizedUser }
 
 @UseGuards(ChatRoomAuthGuard)
-@WebSocketGateway(8001, { cors: '*' })
+@WebSocketGateway({ cors: '*' })
 export class ChatRoomGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
   activeSockets: Map<string, Socket> = new Map()
   private logger = new Logger(ChatRoomGateway.name)
