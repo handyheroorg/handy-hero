@@ -100,6 +100,10 @@ export class SquareService {
   async releasePaymentToProvider(contractId: string, user: SanitizedUser) {
     const contract = await this.contractService.findOneById(contractId, user)
 
+    if (contract.status !== 'ON_GOING') {
+      throw new BadRequestException('This contract is already completed!')
+    }
+
     if (!contract.serviceProvider.isPaymentVerified) {
       throw new BadRequestException("Service provider's payment method is not verified!")
     }
@@ -132,33 +136,36 @@ export class SquareService {
         throw new InternalServerErrorException('Something went wrong while doing transaction, please try again later!')
       }
 
-      /**
-       * Step 2.
-       * We initiate an unlinked refund immediately, so that the amount
-       * is credited into service provider's card.
-       */
-      await this.square.refundsApi.refundPayment({
-        idempotencyKey: crypto.randomUUID(),
-        destinationId: providerCard.squareCardId,
-        amountMoney: {
-          amount: BigInt(contract.settledPrice),
-          currency: 'USD',
-        },
-        customerId: contract.serviceProvider.squareCustomerId,
-        unlinked: true,
-        reason: `Payment from ${user.fullName} for service ${contract.service.name}`,
-        locationId: this.configService.get('SQUARE_LOCATION_ID'),
-      })
+      const [, createdPayment] = await Promise.all([
+        /**
+         * Step 2.
+         * We initiate an unlinked refund immediately, so that the amount
+         * is credited into service provider's card.
+         */
+        await this.square.refundsApi.refundPayment({
+          idempotencyKey: crypto.randomUUID(),
+          destinationId: providerCard.squareCardId,
+          amountMoney: {
+            amount: BigInt(contract.settledPrice),
+            currency: 'USD',
+          },
+          customerId: contract.serviceProvider.squareCustomerId,
+          unlinked: true,
+          reason: `Payment from ${user.fullName} for service ${contract.service.name}`,
+          locationId: this.configService.get('SQUARE_LOCATION_ID'),
+        }),
+        this.prisma.payment.create({
+          data: {
+            amount: contract.settledPrice,
+            squarePaymentId: payment.result.payment.id,
+            client: { connect: { id: user.id } },
+            provider: { connect: { id: contract.serviceProviderId } },
+            contract: { connect: { id: contract.id } },
+          },
+        }),
+      ])
 
-      return this.prisma.payment.create({
-        data: {
-          amount: contract.settledPrice,
-          squarePaymentId: payment.result.payment.id,
-          client: { connect: { id: user.id } },
-          provider: { connect: { id: contract.serviceProviderId } },
-          contract: { connect: { id: contract.id } },
-        },
-      })
+      return createdPayment
     } catch {
       throw new InternalServerErrorException('Something went wrong while doing transaction, please try again later!')
     }
