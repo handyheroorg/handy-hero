@@ -3,6 +3,7 @@ export type ProviderDashboardStats = {
   onGoingContracts: number
   pendingChatRequests: number
   rejectedChatRequests: number
+  pendingProposals: number
 }
 
 export type ClientDashboardStats = {

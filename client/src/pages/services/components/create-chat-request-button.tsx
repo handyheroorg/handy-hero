@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui'
 import { useAuthenticatedUser } from '@/hooks'
-import { BasicProps, Role } from '@/types'
+import { BasicProps, Role, Service } from '@/types'
 import { createChatRequest } from '@/queries'
 import { cn, handleError } from '@/lib'
 
@@ -17,12 +17,21 @@ export default function CreateChatRequestButton({
   serviceId,
   isChatRequestExists,
 }: CreateChatRequestButtonProps) {
+  const qc = useQueryClient()
   const { user } = useAuthenticatedUser()
 
   const createChatRequestMutation = useMutation({
     mutationFn: createChatRequest,
     onError: handleError,
     onSuccess: () => {
+      qc.setQueryData<(Service & { isChatRequestExists: boolean }) | undefined>(['service', serviceId], (prev) => {
+        if (!prev) return
+
+        return {
+          ...prev,
+          isChatRequestExists: true,
+        }
+      })
       toast.success('Chat request created successfully!')
     },
   })

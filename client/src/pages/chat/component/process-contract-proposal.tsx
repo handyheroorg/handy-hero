@@ -103,7 +103,7 @@ export default function ProcessContractProposal({
                 <Button
                   loading={processProposalMutation.isPending}
                   onClick={() => {
-                    processProposalMutation.mutate({ status: 'REJECTED' })
+                    processProposalMutation.mutate({ status: 'ACCEPTED' })
                   }}
                 >
                   Accept

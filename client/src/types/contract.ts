@@ -1,3 +1,4 @@
+import { ChatRoom } from './chat-room'
 import { Service } from './service'
 import { Timestamps } from './timestamp'
 import { User } from './user'
@@ -7,7 +8,9 @@ export type ContractProposal = Timestamps & {
   title: string
   description: string
   chatRoomId: string
-  settledPrice: 40
+  settledPrice: number
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED'
+  chatRoom: ChatRoom
 }
 
 export type Contract = Timestamps & {

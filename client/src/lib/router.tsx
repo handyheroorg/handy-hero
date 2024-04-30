@@ -12,7 +12,7 @@ import ProviderDashboard from '@/pages/provider-dashboard'
 import { CreateService, EditService, FindServices, ServiceDetails } from '@/pages/services'
 import { ChatRequests, ChatRoom } from '@/pages/chat'
 import ClientDashboard from '@/pages/client-dashboard'
-import { ContractDetails } from '@/pages/contract'
+import { ContractDetails, ContractProposals } from '@/pages/contract'
 
 export const router = createBrowserRouter([
   /** Authenticated App */
@@ -108,6 +108,10 @@ export const router = createBrowserRouter([
       {
         path: 'contract',
         children: [
+          {
+            path: '/contract/proposals',
+            element: <ContractProposals />,
+          },
           {
             path: '/contract/:id',
             element: <ContractDetails />,

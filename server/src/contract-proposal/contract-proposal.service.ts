@@ -5,6 +5,7 @@ import { SanitizedUser } from 'src/users/users.types'
 import { NotificationService } from 'src/notification/notification.service'
 import { ContractService } from 'src/contract/contract.service'
 import { NewContractProposalDto, ProcessContractProposalDto } from './contract-proposal.dto'
+import { CONTRACT_PROPOSAL_INCLUDE } from './contract-proposal.fields'
 
 @Injectable()
 export class ContractProposalService {
@@ -118,6 +119,7 @@ export class ContractProposalService {
       where: {
         OR: [{ chatRoom: { clientId: user.id } }, { chatRoom: { providerId: user.id } }],
       },
+      include: CONTRACT_PROPOSAL_INCLUDE,
     })
   }
 }

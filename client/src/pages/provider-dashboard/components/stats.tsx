@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
-import { CheckIcon, CircleDashedIcon, ClockIcon, XIcon } from 'lucide-react'
+import { CircleDashedIcon, ClockIcon, XIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { BasicProps } from '@/types'
 import { fetchDashboardStats } from '@/queries/dashboard'
@@ -43,10 +43,13 @@ export default function Stats({ className, style }: StatsProps) {
         />
         <StatCard
           className="flex-1"
-          title="Accepted chat requests"
-          value={data.acceptedChatRequests}
-          icon={<CheckIcon />}
-          iconClassName="text-green-500"
+          title="Pending contract proposals"
+          value={data.pendingProposals}
+          icon={<CircleDashedIcon />}
+          iconClassName="text-yellow-500"
+          onClick={() => {
+            navigate('/contract/proposals')
+          }}
         />
         <StatCard
           className="flex-1"

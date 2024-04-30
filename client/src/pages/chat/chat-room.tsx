@@ -86,6 +86,7 @@ export function ChatRoom() {
                   <ChatTopBar
                     selectedUser={secondPerson}
                     chatRoomId={data.id}
+                    service={data.service.name}
                     servicePrice={data.service.price}
                     status={data.status}
                   />

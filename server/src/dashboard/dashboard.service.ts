@@ -43,23 +43,28 @@ export class DashboardService {
   }
 
   async getProviderDashboardStats(user: SanitizedUser) {
-    const [pendingChatRequests, acceptedChatRequests, rejectedChatRequests, onGoingContracts] = await Promise.all([
-      this.prisma.chatRequest.count({
-        where: { status: 'PENDING', serviceProviderId: user.id },
-      }),
-      this.prisma.chatRequest.count({
-        where: { status: 'ACCEPTED', serviceProviderId: user.id },
-      }),
-      this.prisma.chatRequest.count({
-        where: { status: 'REJECTED', serviceProviderId: user.id },
-      }),
-      this.prisma.contract.count({
-        where: { status: 'ON_GOING', serviceProviderId: user.id },
-      }),
-    ])
+    const [pendingChatRequests, pendingProposals, acceptedChatRequests, rejectedChatRequests, onGoingContracts] =
+      await Promise.all([
+        this.prisma.chatRequest.count({
+          where: { status: 'PENDING', serviceProviderId: user.id },
+        }),
+        this.prisma.contractProposal.count({
+          where: { status: 'PENDING', chatRoom: { providerId: user.id } },
+        }),
+        this.prisma.chatRequest.count({
+          where: { status: 'ACCEPTED', serviceProviderId: user.id },
+        }),
+        this.prisma.chatRequest.count({
+          where: { status: 'REJECTED', serviceProviderId: user.id },
+        }),
+        this.prisma.contract.count({
+          where: { status: 'ON_GOING', serviceProviderId: user.id },
+        }),
+      ])
 
     return {
       pendingChatRequests,
+      pendingProposals,
       acceptedChatRequests,
       rejectedChatRequests,
       onGoingContracts,

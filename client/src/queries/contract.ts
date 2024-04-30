@@ -20,6 +20,11 @@ export async function fetchContractProposal(chatRoomId: string) {
   return data
 }
 
+export async function fetchContractProposals() {
+  const { data } = await apiClient.get<ContractProposal[]>('/contract-proposal')
+  return data
+}
+
 /**
  * Contracts
  */
