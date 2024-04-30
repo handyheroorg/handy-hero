@@ -4,7 +4,7 @@
 Handy Hero is a platform designed to connect service providers with homeowners, facilitating various home services. It prioritizes transparency in cost and service quality by enabling direct interaction between service providers and homeowners. The platform features customer ratings and feedback mechanisms, ensuring mutual benefits for both parties. Moreover, Handy Hero streamlines payment processes by integrating with the Square API, thereby ensuring transparency in financial transactions.
 
 ## Overview
-Handy Hero utilizes a modern tech stack to deliver its services. The backend is built using NestJS, MongoDB, Typegoose, and Prisma, while the frontend is developed with React (Vite), ReactQuery, and Tailwind CSS. The integration with Square API enables seamless payment processing between customers and service providers.
+Handy Hero utilizes a modern tech stack to deliver its services. The backend is built using NestJS, MongoDB, and Prisma, while the frontend is developed with React (Vite), ReactQuery, and Tailwind CSS. The integration with Square API enables seamless payment processing between customers and service providers.
 
 ## Features Implemented
 - **User Authentication:** Implemented a signup and login functionality for both clients and service providers.
