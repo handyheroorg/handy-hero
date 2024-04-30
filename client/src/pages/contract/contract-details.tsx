@@ -8,6 +8,7 @@ import ErrorMessage from '@/components/error-message'
 import { getErrorMessage } from '@/lib'
 import Container from '@/components/container'
 import EndContractButton from './components/end-contract-button'
+import ReleasePaymentButton from './components/release-payment-button'
 
 export function ContractDetails() {
   const { id } = useParams() as { id: string }
@@ -32,12 +33,16 @@ export function ContractDetails() {
           <EndContractButton contractId={data.id} />
         </div>
 
-        <div className="px-6 py-10 rounded-2xl bg-gray-50">
+        <div className="px-6 py-10 rounded-2xl bg-gray-50 mb-4">
           <div>
             <p className="text-sm">Project Price</p>
             <p className="text-2xl font-medium">${data.settledPrice}</p>
             <p className="capitalize">{data.service.priceType.toLowerCase()}-price</p>
           </div>
+        </div>
+
+        <div className="flex items-center justify-end">
+          <ReleasePaymentButton contractId={data.id} status={data.status} />
         </div>
       </Container>
     ))

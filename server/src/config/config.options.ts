@@ -23,6 +23,7 @@ const validationSchema = joi
     AWS_ACCESS_SECRET: joi.string().required(),
     AWS_BUCKET_NAME: joi.string().required(),
     SQUARE_ACCESS_TOKEN: joi.string().required(),
+    SQUARE_LOCATION_ID: joi.string().required(),
   })
   .required()
 

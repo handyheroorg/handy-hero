@@ -6,7 +6,7 @@ export async function createCard(dto: CreateCardSchema) {
   return data
 }
 
-export async function createPayment() {
-  const { data } = await apiClient.post('/payments/create-payment')
+export async function releasePayment(contractId: string) {
+  const { data } = await apiClient.post(`/payments/release/${contractId}`)
   return data
 }
